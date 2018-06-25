@@ -1,4 +1,4 @@
-import {actions} from '../reducers/search'
+//import {actions} from '../reducers/indexReducers'
 
 export const addSearch = text => ({
   type: 'ADD_SEARCH',
@@ -10,7 +10,7 @@ export const changeKeyword = keyword => ({
   keyword
 });
 
-export const searchNews = (query) => {
+/*export const searchNews = (query) => {
   return async (dispatch) => {
     dispatch(actions.search.loading());
     try {
@@ -26,22 +26,4 @@ export const searchNews = (query) => {
       dispatch(actions.search.error(err));
     }
   };
-};
-
-
-/*export const setVisibilityFilter = filter => ({
-  type: 'SET_VISIBILITY_FILTER',
-  filter
-});
-  
-export const toggleTodo = id => ({
-  type: 'TOGGLE_TODO',
-  id
-});
-  
-export const VisibilityFilters = {
-  SHOW_ALL: 'SHOW_ALL',
-  SHOW_COMPLETED: 'SHOW_COMPLETED',
-  SHOW_ACTIVE: 'SHOW_ACTIVE'
-};
-  */
+};*/

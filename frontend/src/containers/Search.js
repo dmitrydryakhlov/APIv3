@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { addSearch, changeKeyword } from '../actions/indexAction';
 
 
-const AddSearch = ({ dispatch }) => {
+const Search = ({ dispatch }) => {
   let input;
 
   return (
@@ -26,4 +26,4 @@ const AddSearch = ({ dispatch }) => {
   );
 };
 
-export default connect()(AddSearch);
+export default connect()(Search);

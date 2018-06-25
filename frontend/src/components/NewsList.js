@@ -1,6 +1,6 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import Todo from './Todo'
+import React from 'react';
+import PropTypes from 'prop-types';
+import Todo from './Todo';
 
 const NewsList = ({ todos, toggleTodo }) => (
   <ul>
@@ -12,7 +12,7 @@ const NewsList = ({ todos, toggleTodo }) => (
       />
     )}
   </ul>
-)
+);
 
 NewsList.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.shape({
@@ -21,6 +21,6 @@ NewsList.propTypes = {
     text: PropTypes.string.isRequired
   }).isRequired).isRequired,
   toggleTodo: PropTypes.func.isRequired
-}
+};
 
-export default NewsList
+export default NewsList;
