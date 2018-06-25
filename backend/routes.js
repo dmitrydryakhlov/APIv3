@@ -1,9 +1,12 @@
+const request = require('request-promise');
+
 const out = {};
 
 out.search = function (req, res) {
   console.log ('get news');
   // GET news using req.body.keyword
-  const news = [{
+  const news = makeRequest('keyword', 'Apple');
+  /*const news = [{
     'source': {
       'id': null,
       'name': 'Github.com'
@@ -27,8 +30,65 @@ out.search = function (req, res) {
     'urlToImage': 'https://www.bleepingcomputer.com/forums/public/style_images/master/meta_image.png',
     'publishedAt': '2018-03-21T15:46:13Z'
   }];
-
+  */
   res.send(news);
 };
 
 module.exports = out;
+
+function makeRequest(type, keyword, country, source) {
+  let url;
+  // alert('makeRequest - done!')
+
+  if (type === 'country') {
+    url = `${'https://newsapi.org/v2/top-headlines?' +
+      'country='}${country}&` +
+      'apiKey=d2567fbf4c124a28bd3df0189776bd87';
+    console.log('1');
+  }
+  if (type === 'resource') {
+    url = `${'https://newsapi.org/v2/top-headlines?' +
+      'sources='}${source}&` +
+      'apiKey=d2567fbf4c124a28bd3df0189776bd87';
+    console.log('2');
+  }
+  if (type === 'keyword') {
+    url = `${'https://newsapi.org/v2/top-headlines?' +
+      'q='}${keyword}&` +
+      'from=2018-06-25&' +
+      'sortBy=popularity&' +
+      'apiKey=d2567fbf4c124a28bd3df0189776bd87';
+    console.log('3');
+  }
+  const req = {
+    method: 'GET',
+    uri:url,
+    //json: true
+  };
+  //let responseToSent;
+  request(req).then(function (response){
+    console.log (response);
+    if(response['articles']!==undefined){
+      console.log('return response.articles');
+      return response.articles;
+    }else {
+      console.log('return [not found]');
+      return ['not found'];
+    }
+  });
+  //return responseToSent.articles;
+  //dataWrapedByPromise =>
+  //dataWrapedByPromise.json())
+  //.then(data => {
+  //  console.log(data);
+  //  return data;
+  //});
+}
+
+/*request(req).then(
+  dataWrapedByPromise =>
+  dataWrapedByPromise.json())
+  .then(data => {
+    console.log(data);
+    return data;
+  });*/

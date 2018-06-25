@@ -18,7 +18,8 @@ class NewsList extends Component {
     				<p className="newsList__description">{item.description}</p>
     				<span>Published at {item.publishedAt} by {item.author}</span>
     			</div>
-    		));
+        ));
+        //news = this.props;
     	}
     }else{
       console.log('this.props', this.props);
