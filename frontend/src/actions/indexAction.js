@@ -1,6 +1,6 @@
-//import {actions} from '../reducers/indexReducers'
+import {actions} from '../reducers/search'
 
-export const addSearch = text => ({
+/*export const addSearch = text => ({
   type: 'ADD_SEARCH',
   text
 });
@@ -8,9 +8,9 @@ export const addSearch = text => ({
 export const changeKeyword = keyword => ({
   type: 'CHANGE_KEYWORD',
   keyword
-});
+});*/
 
-/*export const searchNews = (query) => {
+export const searchNews = (query) => {
   return async (dispatch) => {
     dispatch(actions.search.loading());
     try {
@@ -26,4 +26,4 @@ export const changeKeyword = keyword => ({
       dispatch(actions.search.error(err));
     }
   };
-};*/
+};

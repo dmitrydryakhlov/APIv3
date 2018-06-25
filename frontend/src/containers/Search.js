@@ -1,29 +1,48 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { addSearch, changeKeyword } from '../actions/indexAction';
+import { Button, FormControl, FormGroup, Panel } from 'react-bootstrap';
+import { searchNews } from '../actions/indexAction';
+import {connect} from 'react-redux';
+import React, { Component } from 'react';
 
 
-const Search = ({ dispatch }) => {
-  let input;
+class Search extends Component {
 
-  return (
-    <div>
-      <form onSubmit={e => {
-        e.preventDefault();
-        if (!input.value.trim()) {
-          return;
-        }
-        dispatch(changeKeyword(input.value));
-        dispatch(addSearch(input.value));
-        input.value = '';
-      }}>
-        <input ref={node => input = node} />
-        <button type="submit">
-          Add Search
-        </button>
-      </form>
-    </div>
-  );
+  render() {
+    let error;
+    if (this.props.searchError) {
+      error = (
+        <Panel header='error' bsStyle='danger'>
+          {this.props.searchError.toString()}
+        </Panel>
+      );
+    }
+
+    return (
+      <Panel header="Search">
+        {error}
+        <FormGroup>
+          <FormControl
+              type="text"
+              inputRef={input => this.keywordInput = input}
+              placeholder="Search fresh news"
+          ></FormControl>
+          <Button onClick={() => this.searchNews()}>Search</Button>
+        </FormGroup>
+      </Panel>);
+  }
+
+  searchNews = () => {
+    const data = JSON.stringify({keyword: this.keywordInput.value});
+    this.props.searchNews(data);
+  };
+
+}
+
+const mapStateToProps = state => ({
+  searchError: state.err,
+});
+
+const mapDispatchToProps = {
+  searchNews,
 };
 
-export default connect()(Search);
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

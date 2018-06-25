@@ -1,26 +1,38 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Todo from './Todo';
+import React, {Component} from 'react';
+import { Image } from 'react-bootstrap';
+import {connect} from 'react-redux';
 
-const NewsList = ({ todos, toggleTodo }) => (
-  <ul>
-    {todos.map(todo =>
-      <Todo
-        key={todo.id}
-        {...todo}
-        onClick={() => toggleTodo(todo.id)}
-      />
-    )}
-  </ul>
-);
+class NewsList extends Component {
+	
+  render() {
+    let news = '';
+    //if(this.props.news!==undefined){
+    	if (this.props.news.length > 0) {
+    		news = this.props.news.map((item, index) => (
+    			<div className="newsList__item" key={index}>
+    				<div className="newsList__image">
+    					<Image src={item.urlToImage} alt="" responsive />
+    				</div>
+    				<a href={item.url}>{item.title}</a>
+    				<p className="newsList__description">{item.description}</p>
+    				<span>Published at {item.publishedAt} by {item.author}</span>
+    			</div>
+    		));
+    	}
+    //}else{
+    //  console.log('this.props.news', undefined);
+    //}
+    return (
+      <div className="newsList">
+        {news}
+      </div>
+    );
+  }
 
-NewsList.propTypes = {
-  todos: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    completed: PropTypes.bool.isRequired,
-    text: PropTypes.string.isRequired
-  }).isRequired).isRequired,
-  toggleTodo: PropTypes.func.isRequired
-};
+}
 
-export default NewsList;
+const mapStateToProps = state => ({
+  news: state.news,
+});
+
+export default connect(mapStateToProps)(NewsList);
