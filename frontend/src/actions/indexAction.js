@@ -1,4 +1,4 @@
-import {actions} from '../reducers/search'
+import {actions} from '../reducers/Reducer'
 
 /*export const addSearch = text => ({
   type: 'ADD_SEARCH',

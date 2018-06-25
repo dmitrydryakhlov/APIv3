@@ -1,6 +1,7 @@
 const out = {};
 
 out.search = function (req, res) {
+  console.log ('get news');
   // GET news using req.body.keyword
   const news = [{
     'source': {

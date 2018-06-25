@@ -6,7 +6,8 @@ class NewsList extends Component {
 	
   render() {
     let news = '';
-    //if(this.props.news!==undefined){
+    console.log(this.props);
+    if(this.props.news!==undefined){
     	if (this.props.news.length > 0) {
     		news = this.props.news.map((item, index) => (
     			<div className="newsList__item" key={index}>
@@ -19,16 +20,15 @@ class NewsList extends Component {
     			</div>
     		));
     	}
-    //}else{
-    //  console.log('this.props.news', undefined);
-    //}
+    }else{
+      console.log('this.props', this.props);
+    }
     return (
       <div className="newsList">
         {news}
       </div>
     );
   }
-
 }
 
 const mapStateToProps = state => ({
