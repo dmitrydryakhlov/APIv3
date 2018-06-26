@@ -1,30 +1,19 @@
 const Promise = require ('promise');
 const request = require('request-promise');
 
+const APIUrl = 'https://newsapi.org/v2/top-headlines?';
+const APIKey = 'apiKey=d2567fbf4c124a28bd3df0189776bd87';
+
 function getUrlByCountry( country ) {
-  let url;
-  url = `${'https://newsapi.org/v2/top-headlines?' +
-  'country='}${country}&` +
-  'apiKey=d2567fbf4c124a28bd3df0189776bd87';
-  return url;
+  return `${APIUrl}country=${country}&${APIKey}`;
 }
 
 function getUrlByResource( source ) {
-  let url;
-  url = `${'https://newsapi.org/v2/top-headlines?' +
-    'sources='}${source}&` +
-    'apiKey=d2567fbf4c124a28bd3df0189776bd87';
-  return url;
+  return `${APIUrl}sources=${source}&${APIKey}`;
 }
 
 function getUrlByKeyword( keyword ) {
-  let url;
-  url = `${'https://newsapi.org/v2/top-headlines?' +
-    'q='}${keyword}&` +
-    'from=2018-06-25&' +
-    'sortBy=popularity&' +
-    'apiKey=d2567fbf4c124a28bd3df0189776bd87';
-  return url;
+  return `${APIUrl}q=${keyword}&from=2018-06-25&sortBy=popularity&${APIKey}`;
 }
 
 const makeRequest = (url) => {
