@@ -12,6 +12,7 @@ export const changeKeyword = keyword => ({
 
 export const searchNews = (query) => {
   return async (dispatch) => {
+    console.log(query);
     dispatch(actions.search.loading());
     try {
         const news = await fetch('/search', { 

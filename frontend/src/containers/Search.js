@@ -31,7 +31,7 @@ class Search extends Component {
   }
 
   searchNews = () => {
-    const data = JSON.stringify({keyword: this.keywordInput.value});
+    const data = JSON.stringify({type: 'keyword', keyword: this.keywordInput.value});
     this.props.searchNews(data);
   };
 
