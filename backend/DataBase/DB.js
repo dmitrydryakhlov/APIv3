@@ -26,7 +26,7 @@ function createTable(name, columnNames, columnTypes) {
 
   console.log(queryString);
 
-  this.state.connection.query(queryString, (queryErr) => {
+  con.query(queryString, (queryErr) => {
     if (queryErr) throw queryErr;
     console.log('Table created');
   });
@@ -42,21 +42,28 @@ function insertInTable(tableName, columnNames, _insertData) {
   const queryString = `${tempString.slice(0, tempString.length - 2)}) VALUES ?`;
   console.log(queryString);
 
-  this.state.connection.query(queryString, [ _insertData ], (queryErr) => {
+  con.query(queryString, [ _insertData ], (queryErr) => {
     if (queryErr) throw queryErr;
     console.log('Data Inserted');
   });
 }
 
 function deleteTable(tableName) {
-  this.state.connection.query(`DROP TABLE ${tableName}`, (queryErr) => {
+  con.query(`DROP TABLE ${tableName}`, (queryErr) => {
     if (queryErr) throw queryErr;
     console.log('Table Deleted');
   });
   // this.state.connection.end();
 }
 
+function dropDataBase(dataBaseName){
+  con.query(`DROP DATABASE ${dataBaseName}`)
+  console.log('DATABASE DROPPED');
+}
+
 module.exports.createDatabase = createDatabase;
 module.exports.createTable = createTable;
 module.exports.insertInTable = insertInTable;
 module.exports.deleteTable = deleteTable;
+module.exports.dropDataBase = dropDataBase;
+
