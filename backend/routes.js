@@ -1,3 +1,5 @@
+const Promise = require ('promise');
+
 const request = require('request-promise');
 
 const out = {};
@@ -5,7 +7,16 @@ const out = {};
 out.search = function (req, res) {
   console.log ('get news');
   // GET news using req.body.keyword
-  const news = makeRequest('keyword', 'Apple');
+  let promise = new Promise(function(resolve,reject){
+    makeRequest('keyword', 'Apple',function(err,res){
+      if(err) reject(err);
+      else resolve(res);
+    });
+  });
+    
+  console.log(promise);
+  //console.log(res);
+  
   /*const news = [{
     'source': {
       'id': null,
@@ -31,7 +42,7 @@ out.search = function (req, res) {
     'publishedAt': '2018-03-21T15:46:13Z'
   }];
   */
-  res.send(news);
+  res.send(promise);
 };
 
 module.exports = out;
@@ -67,13 +78,13 @@ function makeRequest(type, keyword, country, source) {
   };
   //let responseToSent;
   request(req).then(function (response){
-    console.log (response);
-    if(response['articles']!==undefined){
+    console.log (JSON.parse(response).articles);
+    if(JSON.parse(response).articles!==undefined){
       console.log('return response.articles');
-      return response.articles;
+      return (JSON.parse(response).articles);
     }else {
       console.log('return [not found]');
-      return ['not found'];
+      return response;//['not found'];
     }
   });
   //return responseToSent.articles;

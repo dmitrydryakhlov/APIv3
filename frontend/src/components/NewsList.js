@@ -6,7 +6,7 @@ class NewsList extends Component {
 	
   render() {
     let news = '';
-    console.log(this.props);
+    console.log(this.props.news);
     if(this.props.news!==undefined){
     	if (this.props.news.length > 0) {
     		news = this.props.news.map((item, index) => (
