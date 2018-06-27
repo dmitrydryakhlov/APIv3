@@ -63,7 +63,7 @@ const newsColumnTypes = [
   'DATE'         // data
 ];
 DB.dropDataBase('APIv3');
-  console.log('DB DROPPED');
+console.log('DB DROPPED');
 try{
   DB.createDatabase('APIv3');
 }catch(err){
@@ -80,13 +80,14 @@ DB.createTable('news', newsColumnNames, newsColumnTypes);
 
 new Promise((resolve, reject)=>{
   DB.getSourcesForCountries('us').then((data)=>{
-    //console.log(data);
-    console.log('done!');
-    //[].map.call(data, (item) =>{
-      //console.log('----------indserted--------------');
-      DB.insertInTable('resources', resourceColumnNames, data);
-    //});
-    resolve(data);
-    console.log('OKAY');
+    let insertStr = [];
+    [].map.call(data, (item) => {
+      for (let index in item){
+        insertStr.push(item[index]);
+      }
+      DB.insertInTable('resources','"'+ insertStr.join('","').replace(/\'/g) +'"');
+      insertStr= [];
+    
+    });
   });
 });
