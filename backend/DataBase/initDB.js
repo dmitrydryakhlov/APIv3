@@ -21,7 +21,7 @@ const countryInsertData = [
   //////////////////////////////////////////////////////////////
   
 const resourceColumnNames = [
-  //'sourceId',
+  'sourceId',
   'sourceNameId',
   'sourceName',
   'sourceDescription',
@@ -31,7 +31,7 @@ const resourceColumnNames = [
   'sourceCountry'
 ];
 const resourceColumnTypes = [
-  //'INT(4) AUTO_INCREMENT PRIMARY KEY',// sourceId
+  'INT(4) AUTO_INCREMENT PRIMARY KEY',// sourceId
   'VARCHAR(300) NOT NULL', //sourceNameId
   'VARCHAR(300) NOT NULL', //sourceName
   'VARCHAR(500) NOT NULL', //sourceDescription
@@ -62,8 +62,6 @@ const newsColumnTypes = [
   'VARCHAR(150)',   // urlToImage,
   'DATE'         // data
 ];
-DB.dropDataBase('APIv3');
-console.log('DB DROPPED');
 try{
   DB.createDatabase('APIv3');
 }catch(err){
@@ -83,9 +81,9 @@ new Promise((resolve, reject)=>{
     let insertStr = [];
     [].map.call(data, (item) => {
       for (let index in item){
-        insertStr.push(item[index]);
+        insertStr.push(`"${item[index].replace(/\'|\"/g)}"`);
       }
-      DB.insertInTable('resources','"'+ insertStr.join('","').replace(/\'/g) +'"');
+      DB.insertInTable('resources', insertStr.join(','));
       insertStr= [];
     
     });
