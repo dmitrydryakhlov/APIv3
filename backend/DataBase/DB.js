@@ -21,7 +21,7 @@ function createTable(name, columnNames, columnTypes) {
   const queryString = `${tempString.slice(0, tempString.length - 2)  });`;
 
   console.log(queryString);
-
+//
   con.query(queryString, (queryErr) => {
     if (queryErr) throw queryErr;
     console.log('Table created');
