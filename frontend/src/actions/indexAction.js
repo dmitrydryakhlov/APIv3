@@ -23,7 +23,6 @@ export const searchNews = (query) => {
         })
         .then((res) => res.json());
         dispatch(actions.search.success(news));
-        console.log(news);
     } catch (err) {
       dispatch(actions.search.error(err));
     }

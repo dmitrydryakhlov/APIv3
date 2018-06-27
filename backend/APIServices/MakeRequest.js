@@ -1,26 +1,28 @@
 const Promise = require ('promise');
 const request = require('request-promise');
 
-const APIUrl = 'https://newsapi.org/v2/top-headlines?';
+const APIUrlHeadlines = 'https://newsapi.org/v2/top-headlines?';
+const APIUrlSources = 'https://newsapi.org/v2/sources?';
 const APIKey = 'apiKey=d2567fbf4c124a28bd3df0189776bd87';
 
 function getUrlByCountry( country ) {
-  return `${APIUrl}country=${country}&${APIKey}`;
+  return `${APIUrlHeadlines}country=${country}&${APIKey}`;
 }
 
 function getUrlByResource( source ) {
-  return `${APIUrl}sources=${source}&${APIKey}`;
+  return `${APIUrlHeadlines}sources=${source}&${APIKey}`;
 }
 
 function getUrlByKeyword( keyword ) {
-  return `${APIUrl}q=${keyword}&from=2018-06-25&sortBy=popularity&${APIKey}`;
+  return `${APIUrlHeadlines}q=${keyword}&from=2018-06-27&sortBy=popularity&${APIKey}`;
 }
 
-const makeRequest = (url) => {
+function getUrlSourceByCountry( country ) {
+  return `${APIUrlSources}language=en&country=${country}&${APIKey}`;
+}
+
+const makeRequestNews = (url) => {
   return new Promise ((resolve, reject) =>  {
-
-    console.log('makeRequest');
-
     const req = {
       method: 'GET',
       uri:url,
@@ -39,7 +41,29 @@ const makeRequest = (url) => {
   });
 };
 
-module.exports.makeRequest = makeRequest;
+const makeRequestSources = (url) => {
+  return new Promise ((resolve, reject) =>  {
+    const req = {
+      method: 'GET',
+      uri:url,
+    };
+
+    request(req).then(function (response){
+      console.log (JSON.parse(response).sources);
+      if(JSON.parse(response).sources!==undefined){
+        console.log('return response.articles');
+        resolve (JSON.parse(response).sources);
+      }else {
+        console.log('return [not found]');
+        reject (response);
+      }
+    });
+  });
+};
+
+module.exports.makeRequestNews = makeRequestNews;
+module.exports.makeRequestSources = makeRequestSources;
 module.exports.getUrlByKeyword = getUrlByKeyword;
 module.exports.getUrlByResource = getUrlByResource;
 module.exports.getUrlByCountry = getUrlByCountry;
+module.exports.getUrlSourceByCountry = getUrlSourceByCountry;

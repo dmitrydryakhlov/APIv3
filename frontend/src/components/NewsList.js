@@ -21,7 +21,10 @@ class NewsList extends Component {
     			</div>
         ));
         //news = this.props;
-    	}
+    	}else return(
+        <p>no matches</p>
+      );
+
     }else{
       console.log('this.props', this.props);
     }

@@ -22,21 +22,23 @@ const countryInsertData = [
   
 const resourceColumnNames = [
   'sourceId',
+  'sourceNameId',
   'sourceName',
-  'sourceNameId'
+  'sourceDescription',
+  'sourceUrl',
+  'sourceCategory',
+  'sourceLanguage',
+  'sourceCountry'
 ];
 const resourceColumnTypes = [
-  'INT(4) AUTO_INCREMENT PRIMARY KEY',
-  'VARCHAR(20) NOT NULL',
-  'VARCHAR(20) NOT NULL'
-];
-  
-const resourceInsertData = [
-  ['CNN', 'cnn'],
-  ['USA Today', 'usa-today'],
-  ['The New York Times', 'the-new-york-times'],
-  ['BBC News', 'bbc-news'],
-  ['Business Insider', 'business-insider']
+  'INT(4) AUTO_INCREMENT PRIMARY KEY',// sourceId
+  'VARCHAR(20) NOT NULL', //sourceNameId
+  'VARCHAR(20) NOT NULL', //sourceName
+  'VARCHAR(250) NOT NULL', //sourceDescription
+  'VARCHAR(50) NOT NULL', //sourceUrl
+  'VARCHAR(30) NOT NULL', //sourceCategory
+  'VARCHAR(20) NOT NULL', //sourceLanguage
+  'VARCHAR(20) NOT NULL'  //sourceCountry
 ];
   
   //////////////////////////////////////////////////////////////
@@ -73,5 +75,9 @@ DB.createTable('resource', resourceColumnNames, resourceColumnTypes);
 DB.createTable('news', newsColumnNames, newsColumnTypes);
 
 DB.insertInTable('countries', countryColumnNames, countryInsertData);
-DB.insertInTable('sources', resourceColumnNames, resourceInsertData);
 
+const sourceToInsert = DB.getSourcesForCountries('us'); 
+sourceToInsert.map((item)=>{
+  console.log('----------indserted--------------')
+  DB.insertInTable('sources', resourceColumnNames, item);
+});

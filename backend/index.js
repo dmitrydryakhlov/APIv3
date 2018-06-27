@@ -15,6 +15,10 @@ app.use('/search', routes.search, function(){
   console.log('search');
 });
 
+app.use('/search', routes.search, function(){
+  console.log('search');
+});
+
 
 app.listen(3001, function(){
   console.log(100);

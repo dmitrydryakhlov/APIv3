@@ -22,7 +22,7 @@ out.search = (req, res) => {
   }
   console.log(url);
   return new Promise((resolve, reject) => {
-    makeRequest.makeRequest(url)
+    makeRequest.makeRequestNews(url)
       .then(data => { 
         console.log(data);
         res.send(data); })
