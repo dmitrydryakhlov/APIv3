@@ -34,18 +34,37 @@ function createTable(name, columnNames, columnTypes) {
 
 function insertInTable(tableName, columnNames, _insertData) {
   console.log('insertInTable');
+
+  let newInsertData = [];
+  for (let i = 0; i<_insertData.length; i++){
+    newInsertData[i] = [];
+  }
+  [].map.call(_insertData, (item, index)=>{
+    for(let _field in item){
+      newInsertData[index].push(item[_field]);
+      //console.log(item);
+    }
+  });
+  //console.log(newInsertData);
+  
+  
+  
+  
   let tempString = `INSERT INTO ${tableName} (`;
 
   for (let i = 1; i < columnNames.length; i++) {
     tempString += `${columnNames[i]}, `;
   }
   const queryString = `${tempString.slice(0, tempString.length - 2)}) VALUES ?`;
-  console.log(queryString);
+  //console.log(queryString+newInsertData);
+console.log(newInsertData[1]);
 
-  con.query(queryString, [ _insertData ], (queryErr) => {
-    if (queryErr) throw queryErr;
-    console.log('Data Inserted');
-  });
+  for(let i = 0; i< newInsertData.length; i++ ){
+    con.query(queryString, [ newInsertData[i] ], (queryErr) => {
+      if (queryErr) throw queryErr;
+      console.log(i,'Data Inserted');
+    });
+  }
 }
 
 function deleteTable(tableName) {
@@ -64,33 +83,16 @@ function getSourcesForCountries(){
   let url = makeRequest.getUrlSourceByCountry('us');
   console.log(url);
 
-  const sources = new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     makeRequest.makeRequestSources(url)
       .then(data => { 
-        console.log(data);
+        console.log('sourceToInsert***************************');
+        resolve(data);
       })
-    //res.send(data); })
       .catch(err => {
         reject(err);
       });
   });
-
-  //console.log(sources);
-  let sourceToInsert = [];
-  [].map.call(sources,(item, index) => {
-    console.log(index);
-    sourceToInsert[index].id = 2;
-    sourceToInsert[index].nameid = item.id;
-    sourceToInsert[index].name = item.name;
-    sourceToInsert[index].description = item.description;
-    sourceToInsert[index].url = item.url;
-    sourceToInsert[index].category = item.category;
-    sourceToInsert[index].language = item.language;
-    sourceToInsert[index].country = item.country;
-  });
-  console.log('sourceToInsert***************************');
-  console.log(sourceToInsert);
-  return sourceToInsert;
 }
 
 module.exports.createDatabase = createDatabase;

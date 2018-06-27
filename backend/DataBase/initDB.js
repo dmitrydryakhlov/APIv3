@@ -21,7 +21,7 @@ const countryInsertData = [
   //////////////////////////////////////////////////////////////
   
 const resourceColumnNames = [
-  'sourceId',
+  //'sourceId',
   'sourceNameId',
   'sourceName',
   'sourceDescription',
@@ -31,14 +31,14 @@ const resourceColumnNames = [
   'sourceCountry'
 ];
 const resourceColumnTypes = [
-  'INT(4) AUTO_INCREMENT PRIMARY KEY',// sourceId
-  'VARCHAR(20) NOT NULL', //sourceNameId
-  'VARCHAR(20) NOT NULL', //sourceName
-  'VARCHAR(250) NOT NULL', //sourceDescription
-  'VARCHAR(50) NOT NULL', //sourceUrl
-  'VARCHAR(30) NOT NULL', //sourceCategory
-  'VARCHAR(20) NOT NULL', //sourceLanguage
-  'VARCHAR(20) NOT NULL'  //sourceCountry
+  //'INT(4) AUTO_INCREMENT PRIMARY KEY',// sourceId
+  'VARCHAR(300) NOT NULL', //sourceNameId
+  'VARCHAR(300) NOT NULL', //sourceName
+  'VARCHAR(500) NOT NULL', //sourceDescription
+  'VARCHAR(500) NOT NULL', //sourceUrl
+  'VARCHAR(300) NOT NULL', //sourceCategory
+  'VARCHAR(200) NOT NULL', //sourceLanguage
+  'VARCHAR(200) NOT NULL'  //sourceCountry
 ];
   
   //////////////////////////////////////////////////////////////
@@ -62,22 +62,31 @@ const newsColumnTypes = [
   'VARCHAR(150)',   // urlToImage,
   'DATE'         // data
 ];
-
+DB.dropDataBase('APIv3');
+  console.log('DB DROPPED');
 try{
   DB.createDatabase('APIv3');
 }catch(err){
   DB.dropDataBase('APIv3');
+  console.log('DB DROPPED');
   DB.createDatabase('APIv3');
 }
 
 DB.createTable('country', countryColumnNames, countryColumnTypes);
-DB.createTable('resource', resourceColumnNames, resourceColumnTypes);
+DB.createTable('resources', resourceColumnNames, resourceColumnTypes);
 DB.createTable('news', newsColumnNames, newsColumnTypes);
 
-DB.insertInTable('countries', countryColumnNames, countryInsertData);
+//DB.insertInTable('countries', countryColumnNames, countryInsertData);
 
-const sourceToInsert = DB.getSourcesForCountries('us'); 
-sourceToInsert.map((item)=>{
-  console.log('----------indserted--------------')
-  DB.insertInTable('sources', resourceColumnNames, item);
+new Promise((resolve, reject)=>{
+  DB.getSourcesForCountries('us').then((data)=>{
+    //console.log(data);
+    console.log('done!');
+    //[].map.call(data, (item) =>{
+      //console.log('----------indserted--------------');
+      DB.insertInTable('resources', resourceColumnNames, data);
+    //});
+    resolve(data);
+    console.log('OKAY');
+  });
 });

@@ -49,7 +49,7 @@ const makeRequestSources = (url) => {
     };
 
     request(req).then(function (response){
-      console.log (JSON.parse(response).sources);
+      //console.log (JSON.parse(response).sources);
       if(JSON.parse(response).sources!==undefined){
         console.log('return response.articles');
         resolve (JSON.parse(response).sources);
