@@ -5,10 +5,12 @@ const settingsDB = require ('../settings/db');
 const con = mysql.createConnection(settingsDB);
   
 function createDatabase(name) {
-  console.log('createDatabase');
-  con.query(`CREATE DATABASE ${name}`, () => {
-    console.log('Database created');
-  });
+  console.log('create Database');
+  con.query('CREATE DATABASE'+ name);
+  //, (queryErr) => {
+  //if (queryErr) throw queryErr;
+  console.log('Database created');
+  
 }
 
 function createTable(name, columnNames, columnTypes) {
@@ -21,7 +23,7 @@ function createTable(name, columnNames, columnTypes) {
   const queryString = `${tempString.slice(0, tempString.length - 2)  });`;
 
   console.log(queryString);
-//
+  //
   con.query(queryString, (queryErr) => {
     if (queryErr) throw queryErr;
     console.log('Table created');
@@ -40,7 +42,13 @@ function insertInTable(tableName, insertData) {
   });
 }
 
-
+function showTables(){
+  
+  console.log('show tables');
+  //con.query('SHOW COLUMNS FROM resources;',(queryErr) => {
+  //  if (queryErr) throw queryErr;
+  //});
+}
 
 function deleteTable(tableName) {
   con.query(`DROP TABLE ${tableName}`, (queryErr) => {
@@ -73,5 +81,6 @@ module.exports.createTable = createTable;
 module.exports.insertInTable = insertInTable;
 module.exports.deleteTable = deleteTable;
 module.exports.dropDataBase = dropDataBase;
+module.exports.showTables = showTables;
 module.exports.getSourcesForCountries = getSourcesForCountries;
 

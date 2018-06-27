@@ -21,7 +21,7 @@ const countryInsertData = [
   //////////////////////////////////////////////////////////////
   
 const resourceColumnNames = [
-  'sourceId',
+  //'sourceId',
   'sourceNameId',
   'sourceName',
   'sourceDescription',
@@ -31,7 +31,7 @@ const resourceColumnNames = [
   'sourceCountry'
 ];
 const resourceColumnTypes = [
-  'INT(4) AUTO_INCREMENT PRIMARY KEY',// sourceId
+  //'INT(4) AUTO_INCREMENT PRIMARY KEY',// sourceId
   'VARCHAR(300) NOT NULL', //sourceNameId
   'VARCHAR(300) NOT NULL', //sourceName
   'VARCHAR(500) NOT NULL', //sourceDescription
@@ -62,30 +62,35 @@ const newsColumnTypes = [
   'VARCHAR(150)',   // urlToImage,
   'DATE'         // data
 ];
-try{
-  DB.createDatabase('APIv3');
-}catch(err){
-  DB.dropDataBase('APIv3');
-  console.log('DB DROPPED');
-  DB.createDatabase('APIv3');
-}
+//DB.dropDataBase('APIv3');
+DB.createDatabase('apiv3');
+DB.showTables();
+//try{
+//}catch(err){
+//  DB.dropDataBase('apiv3');
+//  console.log('DB DROPPED');
+//  DB.createDatabase('apiv3');
+// }
 
-DB.createTable('country', countryColumnNames, countryColumnTypes);
+/*DB.createTable('country', countryColumnNames, countryColumnTypes);
 DB.createTable('resources', resourceColumnNames, resourceColumnTypes);
 DB.createTable('news', newsColumnNames, newsColumnTypes);
+
+
 
 //DB.insertInTable('countries', countryColumnNames, countryInsertData);
 
 new Promise((resolve, reject)=>{
   DB.getSourcesForCountries('us').then((data)=>{
     let insertStr = [];
-    [].map.call(data, (item) => {
+    [].map.call(data, (item,i) => {
       for (let index in item){
         insertStr.push(`"${item[index].replace(/\'|\"/g)}"`);
       }
       DB.insertInTable('resources', insertStr.join(','));
-      insertStr= [];
+      insertStr= [];console.log(i);
     
     });
   });
 });
+*/
