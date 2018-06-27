@@ -12,11 +12,12 @@ class NewsList extends Component {
     		news = this.props.news.map((item, index) => (
     			<div className="newsList__item" key={index}>
     				<div className="newsList__image">
-    					<Image src={item.urlToImage} alt="" responsive />
+    					<Image height = '300px'  src={item.urlToImage} alt="" responsive />
     				</div>
     				<a href={item.url}>{item.title}</a>
     				<p className="newsList__description">{item.description}</p>
-    				<span>Published at {item.publishedAt} by {item.author}</span>
+            <span>Published at {item.publishedAt} by {item.author}</span>
+            <br/><br/>
     			</div>
         ));
         //news = this.props;
