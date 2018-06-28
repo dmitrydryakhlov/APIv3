@@ -1,13 +1,13 @@
 const DB = require('./DB');
-
+const MakeRequest = require ('../APIServices/MakeRequest');
 const countryColumnNames = [
   'countryId',
   'countryName',
   'countryShortName'
 ];
 const countryColumnTypes = [
-  'INT(4) AUTO_INCREMENT PRIMARY KEY',
-  'VARCHAR(15) NOT NULL',
+  'INT(4) NOT NULL AUTO_INCREMENT PRIMARY KEY',
+  'VARCHAR(20) NOT NULL',
   'VARCHAR(3) NOT NULL '
 ];
   
@@ -62,14 +62,14 @@ const newsColumnTypes = [
   'VARCHAR(150)',   // urlToImage,
   'DATE'         // data
 ];
-//DB.dropDataBase('APIv3');
+//DB.dropDataBase('APIv4');
 //DB.showTables();
 try{
-  DB.createDatabase('apiv4');
+  //DB.createDatabase('apiv4');
 }catch(err){
-  DB.dropDataBase('apiv4');
+  //DB.dropDataBase('apiv4');
   console.log('DB DROPPED');
-  DB.createDatabase('apiv4');
+  //DB.createDatabase('apiv4');
 }
 
 DB.createTable('country', countryColumnNames, countryColumnTypes);
@@ -77,10 +77,14 @@ DB.createTable('resources', resourceColumnNames, resourceColumnTypes);
 DB.createTable('news', newsColumnNames, newsColumnTypes);
 
 
+//[].map.call((countryInsertData), (item)=>{
+//console.log('country', '"'+item.join('","')+'"');
+//  DB.insertInTable('country (countryName, countryShortName)', '"'+item.join('","')+'"');
+//});
 
-DB.insertInTable('countries', countryColumnNames, countryInsertData);
 
-new Promise((resolve, reject)=>{
+
+/*new Promise((resolve, reject)=>{
   DB.getSourcesForCountries('us').then((data)=>{
     let insertStr = [];
     [].map.call(data, (item,i) => {
@@ -92,4 +96,54 @@ new Promise((resolve, reject)=>{
     
     });
   });
+});*/
+
+new Promise((resolve, reject)=>{
+  //получаем всё из country
+  DB.select('SELECT * FROM country').then((data)=>{
+    let countries = [];
+    
+    //парсим до объектов 
+    const countryArr = (JSON.parse(JSON.stringify(data)));
+    //получем массив ['ru', 'it', ....]
+    [].map.call(countryArr, (item)=>{
+      countries.push(item.countryShortName);
+    });
+    //отправляем массив
+    return(countries);
+  })
+    .then((data)=>{
+      let urlsToGetResources = [];
+      //заполняем массив url'ами
+      [].map.call(data, (item)=>{
+        urlsToGetResources.push(MakeRequest.getUrlSourceByCountry(item));
+      });
+      return(urlsToGetResources);
+    })
+    .then((urlsToGetResources)=>{
+      console.log(urlsToGetResources);
+      let resources = [];
+      [].map.call(urlsToGetResources, (item) => {
+        new Promise ((resolve,reject) => {
+          MakeRequest.makeRequestSources(item)
+            .then((data) => {
+              //console.log(data);
+              resolve(data);
+              resources.push(data);
+            //return(resources);
+            //[].map.call(data, (item)=>{
+            //resources.push(data);
+            });
+        });
+        //console.log(1);
+        //console.log(resources);
+      });
+      return resources;
+      
+    })
+    .then((resources)=>{
+      console.log(resources);
+    });
 });
+//   DB.insertInTable('resources', insertStr.join(','));
+//   insertStr= [];console.log(i);

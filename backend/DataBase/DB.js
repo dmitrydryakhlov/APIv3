@@ -13,6 +13,16 @@ function createDatabase(name) {
   
 }
 
+function select(query){
+  return new Promise ((resolve,reject)=>{
+    con.query(query, (err, result)=>{
+      if(err)throw err;
+      //console.log(result);
+      resolve (result);
+    });
+  });
+}
+
 function createTable(name, columnNames, columnTypes) {
   console.log('createTable');
   let tempString = `CREATE TABLE IF NOT EXISTS ${name} (`;
@@ -83,4 +93,5 @@ module.exports.deleteTable = deleteTable;
 module.exports.dropDataBase = dropDataBase;
 module.exports.showTables = showTables;
 module.exports.getSourcesForCountries = getSourcesForCountries;
+module.exports.select = select;
 
