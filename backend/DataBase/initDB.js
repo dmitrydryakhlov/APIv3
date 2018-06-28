@@ -62,6 +62,9 @@ const newsColumnTypes = [
   'VARCHAR(150)',   // urlToImage,
   'DATE'         // data
 ];
+
+
+
 //DB.dropDataBase('APIv4');
 //DB.showTables();
 try{
@@ -77,29 +80,32 @@ DB.createTable('resources', resourceColumnNames, resourceColumnTypes);
 DB.createTable('news', newsColumnNames, newsColumnTypes);
 
 
-[].map.call((countryInsertData), (item)=>{
-  console.log('country', '"'+item.join('","')+'"');
-  DB.insertInTable('country (countryName, countryShortName)', '"'+item.join('","')+'"');
-});
-
-
+for (let item of countryInsertData){
+  DB.select('SELECT countryShortName FROM country WHERE countryShortName ="' + item[1]+'"' ).then((flag)=>{ 
+    if(flag.length==0){
+      DB.insertInTable('country (countryName, countryShortName)', '"'+item.join('","')+'"');
+    }
+  });
+}
 
 new Promise(()=>{
   DB.select('SELECT countryShortName FROM country').then((data)=>{
     for(let item in data){
       new Promise ((resolve) => {
-        resolve(
-          MakeRequest.makeRequestSources(
-            MakeRequest.getUrlSourceByCountry(
-              data[item].countryShortName)));
+        let url = MakeRequest.getUrlSourceByCountry(data[item].countryShortName);
+        let result = MakeRequest.makeRequestSources(url);
+        resolve(result);
       }).then((data)=>{
-        let insertStr = [];
-        for (item of data){
-          for (let index in item){
-            insertStr.push(`"${item[index].replace(/\'|\"/g)}"`);
-          }
-          DB.insertInTable('resources (sourceNameId,sourceName,sourceDescription,sourceUrl,sourceCategory,sourceLanguage,sourceCountry)', insertStr.join(','));
-          insertStr= [];
+        for (let item of data){
+          DB.select('SELECT sourceNameId FROM resources WHERE sourceNameId ="' + item.id+'"' ).then((flag)=>{        
+            if(flag.length==0){
+              let insertStr = [];
+              for (let index in item){
+                insertStr.push(`"${item[index].replace(/\'|\"/g)}"`);
+              }
+              DB.insertInTable('resources (sourceNameId,sourceName,sourceDescription,sourceUrl,sourceCategory,sourceLanguage,sourceCountry)', insertStr.join(','));
+            }
+          });
         }
       });
     }
