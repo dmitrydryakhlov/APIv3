@@ -63,22 +63,22 @@ const newsColumnTypes = [
   'DATE'         // data
 ];
 //DB.dropDataBase('APIv3');
-DB.createDatabase('apiv3');
-DB.showTables();
-//try{
-//}catch(err){
-//  DB.dropDataBase('apiv3');
-//  console.log('DB DROPPED');
-//  DB.createDatabase('apiv3');
-// }
+//DB.showTables();
+try{
+  DB.createDatabase('apiv4');
+}catch(err){
+  DB.dropDataBase('apiv4');
+  console.log('DB DROPPED');
+  DB.createDatabase('apiv4');
+}
 
-/*DB.createTable('country', countryColumnNames, countryColumnTypes);
+DB.createTable('country', countryColumnNames, countryColumnTypes);
 DB.createTable('resources', resourceColumnNames, resourceColumnTypes);
 DB.createTable('news', newsColumnNames, newsColumnTypes);
 
 
 
-//DB.insertInTable('countries', countryColumnNames, countryInsertData);
+DB.insertInTable('countries', countryColumnNames, countryInsertData);
 
 new Promise((resolve, reject)=>{
   DB.getSourcesForCountries('us').then((data)=>{
@@ -93,4 +93,3 @@ new Promise((resolve, reject)=>{
     });
   });
 });
-*/

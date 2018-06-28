@@ -2,7 +2,7 @@ let settingsDB = {
   host:'localhost',
   user:'root',
   password:'root',
-  database: 'mydb'
+  database: 'apiv4'
 };
 
 module.exports = settingsDB;

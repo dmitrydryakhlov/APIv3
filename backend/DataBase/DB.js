@@ -6,7 +6,7 @@ const con = mysql.createConnection(settingsDB);
   
 function createDatabase(name) {
   console.log('create Database');
-  con.query('CREATE DATABASE'+ name);
+  con.query('CREATE DATABASE '+ name);
   //, (queryErr) => {
   //if (queryErr) throw queryErr;
   console.log('Database created');
