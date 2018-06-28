@@ -105,6 +105,17 @@ new Promise(()=>{
               }
               DB.insertInTable('resources (sourceNameId,sourceName,sourceDescription,sourceUrl,sourceCategory,sourceLanguage,sourceCountry)', insertStr.join(','));
             }
+            DB.select('SELECT sourceNameId FROM resources').then((data)=>{
+              //console.log(data);
+              for(let item in data){
+                new Promise ((resolve) => {
+                  let url = MakeRequest.getUrlNewsByResource(data[item].sourceNameId);
+                  let result = MakeRequest.makeRequestNews(url).then((data)=>{
+                    console.log(data);
+                  });
+                });
+              }
+            });
           });
         }
       });

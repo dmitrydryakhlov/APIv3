@@ -70,8 +70,8 @@ function dropDataBase(dataBaseName){
   console.log('DATABASE DROPPED');
 }
 
-function getSourcesForCountries(){
-  let url = makeRequest.getUrlSourceByCountry('us');
+function getSourcesForCountries(country){
+  let url = makeRequest.getUrlSourceByCountry(country);
   console.log(url);
   return new Promise((resolve, reject) => {
     makeRequest.makeRequestSources(url)
