@@ -68,7 +68,7 @@ try{
   //DB.createDatabase('apiv4');
 }catch(err){
   //DB.dropDataBase('apiv4');
-  console.log('DB DROPPED');
+  //console.log('DB DROPPED');
   //DB.createDatabase('apiv4');
 }
 
@@ -84,66 +84,24 @@ DB.createTable('news', newsColumnNames, newsColumnTypes);
 
 
 
-/*new Promise((resolve, reject)=>{
-  DB.getSourcesForCountries('us').then((data)=>{
-    let insertStr = [];
-    [].map.call(data, (item,i) => {
-      for (let index in item){
-        insertStr.push(`"${item[index].replace(/\'|\"/g)}"`);
-      }
-      DB.insertInTable('resources', insertStr.join(','));
-      insertStr= [];console.log(i);
-    
-    });
+new Promise(()=>{
+  DB.select('SELECT countryShortName FROM country').then((data)=>{
+    for(let item in data){
+      new Promise ((resolve) => {
+        resolve(
+          MakeRequest.makeRequestSources(
+            MakeRequest.getUrlSourceByCountry(
+              data[item].countryShortName)));
+      }).then((data)=>{
+        let insertStr = [];
+        for (item of data){
+          for (let index in item){
+            insertStr.push(`"${item[index].replace(/\'|\"/g)}"`);
+          }
+          DB.insertInTable('resources', insertStr.join(','));
+          insertStr= [];
+        }
+      });
+    }
   });
-});*/
-
-new Promise((resolve, reject)=>{
-  //получаем всё из country
-  DB.select('SELECT * FROM country').then((data)=>{
-    let countries = [];
-    
-    //парсим до объектов 
-    const countryArr = (JSON.parse(JSON.stringify(data)));
-    //получем массив ['ru', 'it', ....]
-    [].map.call(countryArr, (item)=>{
-      countries.push(item.countryShortName);
-    });
-    //отправляем массив
-    return(countries);
-  })
-    .then((data)=>{
-      let urlsToGetResources = [];
-      //заполняем массив url'ами
-      [].map.call(data, (item)=>{
-        urlsToGetResources.push(MakeRequest.getUrlSourceByCountry(item));
-      });
-      return(urlsToGetResources);
-    })
-    .then((urlsToGetResources)=>{
-      console.log(urlsToGetResources);
-      let resources = [];
-      [].map.call(urlsToGetResources, (item) => {
-        new Promise ((resolve,reject) => {
-          MakeRequest.makeRequestSources(item)
-            .then((data) => {
-              //console.log(data);
-              resolve(data);
-              resources.push(data);
-            //return(resources);
-            //[].map.call(data, (item)=>{
-            //resources.push(data);
-            });
-        });
-        //console.log(1);
-        //console.log(resources);
-      });
-      return resources;
-      
-    })
-    .then((resources)=>{
-      console.log(resources);
-    });
 });
-//   DB.insertInTable('resources', insertStr.join(','));
-//   insertStr= [];console.log(i);
