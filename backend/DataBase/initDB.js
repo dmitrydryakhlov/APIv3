@@ -21,7 +21,7 @@ const countryInsertData = [
   //////////////////////////////////////////////////////////////
   
 const resourceColumnNames = [
-  //'sourceId',
+  'sourceId',
   'sourceNameId',
   'sourceName',
   'sourceDescription',
@@ -31,7 +31,7 @@ const resourceColumnNames = [
   'sourceCountry'
 ];
 const resourceColumnTypes = [
-  //'INT(4) AUTO_INCREMENT PRIMARY KEY',// sourceId
+  'INT(4) AUTO_INCREMENT PRIMARY KEY',// sourceId
   'VARCHAR(300) NOT NULL', //sourceNameId
   'VARCHAR(300) NOT NULL', //sourceName
   'VARCHAR(500) NOT NULL', //sourceDescription
@@ -77,10 +77,10 @@ DB.createTable('resources', resourceColumnNames, resourceColumnTypes);
 DB.createTable('news', newsColumnNames, newsColumnTypes);
 
 
-//[].map.call((countryInsertData), (item)=>{
-//console.log('country', '"'+item.join('","')+'"');
-//  DB.insertInTable('country (countryName, countryShortName)', '"'+item.join('","')+'"');
-//});
+[].map.call((countryInsertData), (item)=>{
+  console.log('country', '"'+item.join('","')+'"');
+  DB.insertInTable('country (countryName, countryShortName)', '"'+item.join('","')+'"');
+});
 
 
 
@@ -98,7 +98,7 @@ new Promise(()=>{
           for (let index in item){
             insertStr.push(`"${item[index].replace(/\'|\"/g)}"`);
           }
-          DB.insertInTable('resources', insertStr.join(','));
+          DB.insertInTable('resources (sourceNameId,sourceName,sourceDescription,sourceUrl,sourceCategory,sourceLanguage,sourceCountry)', insertStr.join(','));
           insertStr= [];
         }
       });

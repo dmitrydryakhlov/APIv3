@@ -24,7 +24,6 @@ function select(query){
 }
 
 function createTable(name, columnNames, columnTypes) {
-  console.log('createTable');
   let tempString = `CREATE TABLE IF NOT EXISTS ${name} (`;
 
   for (let i = 0; i < columnTypes.length; i++) {
@@ -33,7 +32,6 @@ function createTable(name, columnNames, columnTypes) {
   const queryString = `${tempString.slice(0, tempString.length - 2)  });`;
 
   console.log(queryString);
-  //
   con.query(queryString, (queryErr) => {
     if (queryErr) throw queryErr;
     console.log('Table created');
@@ -44,7 +42,7 @@ function insertInTable(tableName, insertData) {
   //console.log('insertInTable');
   
   let queryString = `INSERT INTO ${tableName} VALUES (${insertData});`;
-  console.log(queryString, '\n\n');
+  console.log(queryString, '\n');
 
   con.query(queryString, (queryErr) => {
     if (queryErr) throw queryErr;
