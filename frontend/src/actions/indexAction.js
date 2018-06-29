@@ -1,15 +1,5 @@
 import {actions} from '../reducers/Reducer'
 
-/*export const addSearch = text => ({
-  type: 'ADD_SEARCH',
-  text
-});
-  
-export const changeKeyword = keyword => ({
-  type: 'CHANGE_KEYWORD',
-  keyword
-});*/
-
 export const searchNews = (query) => {
   return async (dispatch) => {
     console.log(query);
@@ -25,6 +15,24 @@ export const searchNews = (query) => {
         dispatch(actions.search.success(news));
     } catch (err) {
       dispatch(actions.search.error(err));
+    }
+  };
+};
+
+export const getCountry = (query) => {
+  return async (dispatch) => {
+    dispatch(actions.country.loading());
+    try {
+        const country = await fetch('/country', { 
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: '',
+          responseType: 'json',
+        })
+        .then((res) => res.json());
+        dispatch(actions.country.success(country));
+    } catch (err) {
+      dispatch(actions.country.error(err));
     }
   };
 };

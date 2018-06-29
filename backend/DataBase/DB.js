@@ -7,17 +7,13 @@ const con = mysql.createConnection(settingsDB);
 function createDatabase(name) {
   console.log('create Database');
   con.query('CREATE DATABASE '+ name);
-  //, (queryErr) => {
-  //if (queryErr) throw queryErr;
   console.log('Database created');
-  
 }
 
 function select(query){
   return new Promise ((resolve,reject)=>{
     con.query(query, (err, result)=>{
       if(err)throw err;
-      //console.log(result);
       resolve (result);
     });
   });

@@ -1,5 +1,5 @@
 import { Button, FormControl, FormGroup, Panel } from 'react-bootstrap';
-import { searchNews } from '../actions/indexAction';
+import { searchNews, getCountry } from '../actions/indexAction';
 import {connect} from 'react-redux';
 import React, { Component } from 'react';
 
@@ -25,7 +25,7 @@ class Search extends Component {
               inputRef={input => this.keywordInput = input}
               placeholder="Search fresh news"
           ></FormControl>
-          <Button onClick={() => this.searchNews()}>Search</Button>
+          <Button onClick={() => this.getCountry()}>Search</Button>
         </FormGroup>
       </Panel>);
   }
@@ -33,6 +33,11 @@ class Search extends Component {
   searchNews = () => {
     const data = JSON.stringify({type: 'keyword', keyword: this.keywordInput.value});
     this.props.searchNews(data);
+  };
+  getCountry = () => {
+    console.log(this.props);
+    //const data = JSON.stringify({type: 'keyword', keyword: this.keywordInput.value});
+    this.props.getCountry('dima');
   };
 
 }
@@ -42,7 +47,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  searchNews,
+  getCountry,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);
