@@ -27,7 +27,7 @@ function createTable(name, columnNames, columnTypes) {
   }
   const queryString = `${tempString.slice(0, tempString.length - 2)  });`;
 
-  console.log(queryString);
+  //console.log(queryString);
   con.query(queryString, (queryErr) => {
     if (queryErr) throw queryErr;
     console.log('Table created');
@@ -38,11 +38,11 @@ function insertInTable(tableName, insertData) {
   //console.log('insertInTable');
   
   let queryString = `INSERT INTO ${tableName} VALUES (${insertData});`;
-  console.log(queryString, '\n');
+  //console.log(queryString, '\n');
 
   con.query(queryString, (queryErr) => {
     if (queryErr) throw queryErr;
-    console.log('***********Data Inserted**********');
+    //console.log('***********Data Inserted**********');
   });
 }
 
@@ -68,7 +68,7 @@ function dropDataBase(dataBaseName){
 
 function getSourcesForCountries(country){
   let url = makeRequest.getUrlSourceByCountry(country);
-  console.log(url);
+  //console.log(url);
   return new Promise((resolve, reject) => {
     makeRequest.makeRequestSources(url)
       .then(data => { 

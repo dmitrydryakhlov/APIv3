@@ -1,14 +1,113 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' }
-];
+const STATES = require('../data/states');
 
-const MyComponent = () => (
-  <Select options={options} />
-);
+class StatesField extends Component {
+  //displayName: 'StatesField',
+  //PropTypes: {
+  //  label: PropTypes.string,
+  //  searchable: PropTypes.bool,
+  // }
 
-export default MyComponent;
+  state =  {label: '',searchable:true }
+  getDefaultProps () {
+    return {
+      label: 'States:',
+      searchable: true,
+    };
+  }
+  getInitialState () {
+    return {
+      country: 'AU',
+      disabled: false,
+      searchable: this.props.searchable,
+      selectValue: 'new-south-wales',
+      clearable: true,
+      rtl: false,
+    };
+  }
+  clearValue (e) {
+    this.select.setInputValue('');
+  }
+  switchCountry (e) {
+    var newCountry = e.target.value;
+    this.setState({
+      country: newCountry,
+      selectValue: null,
+    });
+  }
+  updateValue (newValue) {
+    this.setState({
+      selectValue: newValue,
+    });
+  }
+  focusStateSelect () {
+    this.select.focus();
+  }
+  toggleCheckbox (e) {
+    let newState = {};
+    newState[e.target.name] = e.target.checked;
+    this.setState(newState);
+  }
+  render () {
+    var options = STATES[this.state.country];
+    return (
+      <div className="section">
+        <Select
+          id="state-select"
+          ref={(ref) => { this.select = ref; }}
+          onBlurResetsInput={false}
+          onSelectResetsInput={false}
+          autoFocus
+          options={options}
+          simpleValue
+          clearable={this.state.clearable}
+          name="selected-state"
+          disabled={this.state.disabled}
+          value={this.state.selectValue}
+          onChange={this.updateValue}
+          rtl={this.state.rtl}
+          searchable={this.state.searchable}
+        />
+        <button style={{ marginTop: '15px' }} type="button" onClick={this.focusStateSelect}>Focus Select</button>
+        <button style={{ marginTop: '15px' }} type="button" onClick={this.clearValue}>Clear Value</button>
+
+        <div className="checkbox-list">
+
+          <label className="checkbox">
+            <input type="checkbox" className="checkbox-control" name="searchable" checked={this.state.searchable} onChange={this.toggleCheckbox}/>
+            <span className="checkbox-label">Searchable</span>
+          </label>
+          <label className="checkbox">
+            <input type="checkbox" className="checkbox-control" name="disabled" checked={this.state.disabled} onChange={this.toggleCheckbox}/>
+            <span className="checkbox-label">Disabled</span>
+          </label>
+          <label className="checkbox">
+            <input type="checkbox" className="checkbox-control" name="clearable" checked={this.state.clearable} onChange={this.toggleCheckbox}/>
+            <span className="checkbox-label">Clearable</span>
+          </label>
+          <label className="checkbox">
+            <input type="checkbox" className="checkbox-control" name="rtl" checked={this.state.rtl} onChange={this.toggleCheckbox}/>
+            <span className="checkbox-label">rtl</span>
+          </label>
+        </div>
+        <div className="checkbox-list">
+          <label className="checkbox">
+            <input type="radio" className="checkbox-control" checked={this.state.country === 'AU'} value="AU" onChange={this.switchCountry}/>
+            <span className="checkbox-label">Get News by resource</span>
+          </label>
+          <label className="checkbox">
+            <input type="radio" className="checkbox-control" checked={this.state.country === 'US'} value="US" onChange={this.switchCountry}/>
+            <span className="checkbox-label">Get News by country</span>
+          </label>
+        </div>
+      </div>
+    );
+  }
+}
+
+
+export default StatesField;

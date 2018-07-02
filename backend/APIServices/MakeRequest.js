@@ -7,19 +7,19 @@ const APIKey = 'apiKey=d2567fbf4c124a28bd3df0189776bd87';
 const APIKey2 = 'apiKey=a3b2e88ff6d44baeb40126b05d48348e';
 
 function getUrlByCountry( country ) {
-  return `${APIUrlHeadlines}country=${country}&${APIKey2}`;
+  return `${APIUrlHeadlines}country=${country}&${APIKey}`;
 }
 
 function getUrlByKeyword( keyword ) {
-  return `${APIUrlHeadlines}q=${keyword}&from=2018-06-28&sortBy=popularity&${APIKey2}`;
+  return `${APIUrlHeadlines}q=${keyword}&from=2018-06-28&sortBy=popularity&${APIKey}`;
 }
 
 function getUrlSourceByCountry( country ) {
-  return `${APIUrlSources}&country=${country}&${APIKey2}`;
+  return `${APIUrlSources}&country=${country}&${APIKey}`;
 }
 
 function getUrlNewsByResource( resource ) {
-  return `${APIUrlHeadlines}&sources=${resource}&${APIKey2}`;
+  return `${APIUrlHeadlines}sources=${resource}&${APIKey}`;
 }
 
 const makeRequestNews = (url) => {
@@ -30,7 +30,7 @@ const makeRequestNews = (url) => {
     };
 
     request(req).then(function (response){
-      console.log (JSON.parse(response).articles);
+      //console.log (JSON.parse(response).articles);
       if(JSON.parse(response).articles!==undefined){
         console.log('return response.articles');
         resolve (JSON.parse(response).articles);
