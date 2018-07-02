@@ -14,7 +14,6 @@ class StatesField extends Component {
     this.clearValue = this.clearValue.bind(this);
     this.switchSource = this.switchSource.bind(this);
     this.updateValue = this.updateValue.bind(this);
-    this.toggleCheckbox = this.toggleCheckbox.bind(this);
 
     this.state = {
       label: 'States:',
@@ -46,20 +45,16 @@ class StatesField extends Component {
   focusStateSelect () {
     this.select.focus();
   }
-  toggleCheckbox (e) {
-    let newState = {};
-    newState[e.target.name] = e.target.checked;
-    this.setState(newState);
-  }
+
   render () {
     console.log(this.props);
     var options = [];
     if(this.state.source === 'resource'){
-      for (let item in this.props.country){
+      for (let item in this.props.source){
         options.push({value: this.props.source[item], label: this.props.source[item], className: this.props.source[item]});
       }
     }else{
-      for (let item in this.props.source){
+      for (let item in this.props.country){
         options.push({value: this.props.country[item], label: this.props.country[item], className: this.props.country[item]});
       }
     }
@@ -101,22 +96,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect (mapStateToProps)(StatesField);
-
-/* <div className="checkbox-list">
-          <label className="checkbox">
-            <input type="checkbox" className="checkbox-control" name="searchable" checked={this.state.searchable} onChange={this.toggleCheckbox}/>
-            <span className="checkbox-label">Searchable</span>
-          </label>
-          <label className="checkbox">
-            <input type="checkbox" className="checkbox-control" name="disabled" checked={this.state.disabled} onChange={this.toggleCheckbox}/>
-            <span className="checkbox-label">Disabled</span>
-          </label>
-          <label className="checkbox">
-            <input type="checkbox" className="checkbox-control" name="clearable" checked={this.state.clearable} onChange={this.toggleCheckbox}/>
-            <span className="checkbox-label">Clearable</span>
-          </label>
-          <label className="checkbox">
-            <input type="checkbox" className="checkbox-control" name="rtl" checked={this.state.rtl} onChange={this.toggleCheckbox}/>
-            <span className="checkbox-label">rtl</span>
-          </label>
-        </div>*/
