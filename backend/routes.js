@@ -46,4 +46,20 @@ out.country = (req, res) => {
   });
 };
 
+out.resource = (req, res) => {
+  return new Promise((resolve, reject) => {
+    DB.select('SELECT sourceName FROM resources')
+      .then(data => { 
+        let resources = [];
+        for(let item in data){
+          resources.push(data[item].sourceName);
+        }
+        res.send(resources);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+};
+
 module.exports = out;

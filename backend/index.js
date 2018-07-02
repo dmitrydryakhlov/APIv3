@@ -14,9 +14,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use('/search', routes.search, function(){
   console.log('search');
 });
-
 app.use('/country', routes.country, function(){
   console.log('country');
+});
+app.use('/resource', routes.resource, function(){
+  console.log('resource');
 });
 
 app.listen(3001, function(){

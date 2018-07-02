@@ -1,15 +1,12 @@
 exports.AU = [
-  { value: 'australian-capital-territory', label: 'Australian Capital Territory', className: 'State-ACT' },
-  { value: 'new-south-wales', label: 'New South Wales', className: 'State-NSW' },
-  { value: 'victoria', label: 'Victoria', className: 'State-Vic' },
-  { value: 'queensland', label: 'Queensland', className: 'State-Qld' },
-  { value: 'western-australia', label: 'Western Australia', className: 'State-WA' },
-  { value: 'south-australia', label: 'South Australia', className: 'State-SA' },
-  { value: 'tasmania', label: 'Tasmania', className: 'State-Tas' },
-  { value: 'northern-territory', label: 'Northern Territory', className: 'State-NT' },
+  { value: 'Russia', label: 'Russia', className: 'State-ACT' },
+  { value: 'Italy', label: 'Italy', className: 'State-NSW' },
+  { value: 'France', label: 'France', className: 'State-Vic' },
+  { value: 'United Kingdom', label: 'United Kingdom', className: 'State-Qld' },
+  { value: 'United States', label: 'United States', className: 'State-WA' },
 ];
 
-exports.US = [
+/*exports.US = [
   { value: 'AL', label: 'Alabama', disabled: true },
   { value: 'AK', label: 'Alaska' },
   { value: 'AS', label: 'American Samoa' },
@@ -69,4 +66,4 @@ exports.US = [
   { value: 'WV', label: 'West Virginia' },
   { value: 'WI', label: 'Wisconsin' },
   { value: 'WY', label: 'Wyoming' },
-];
+];*/

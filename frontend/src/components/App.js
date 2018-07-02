@@ -8,8 +8,8 @@ class App extends Component {
     return(
       <div>
         <Search/>
-        <NewsList />
         <MyMultiSelect />
+        <NewsList />
       </div>
     );
   }

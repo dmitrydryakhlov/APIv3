@@ -24,7 +24,7 @@ class NewsList extends Component {
         <p>no matches</p>
       );
     }else{
-      console.log('this.props', this.props);
+      //console.log('this.props', this.props);
     }
     return (
       <div className="newsList">
