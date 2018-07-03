@@ -63,19 +63,25 @@ out.resource = (req, res) => {
 };
 
 out.getNewsByFilter = (req, res) => {
-  console.log(req.body);
   return new Promise((resolve, reject) => {
-    DB.select('SELECT * FROM news')
-      .then(data => { 
-        let news = [];
-        for(let item in data){
-          news.push(data[item]);
-        }
-        res.send(news);
-      })
-      .catch(err => {
-        reject(err);
-      });
+    if(req.body.selectedResource!=''){
+      DB.select('SELECT sourceNameId FROM resources WHERE sourceName = "'+req.body.selectedResource+'"')
+        .then(data => {
+          for(let item in data){
+            DB.select('SELECT * FROM news WHERE sourceId = "'+data[item].sourceNameId+'"')
+              .then(data => {
+                let news = [];
+                for(let item in data){
+                  news.push(data[item]);
+                }
+                res.send(news);
+              });
+          }
+        })
+        .catch(err => {
+          reject(err);
+        });
+    }
   });
 };
 

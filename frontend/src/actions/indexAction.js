@@ -20,6 +20,7 @@ export const searchNews = (query) => {
 };
 
 export const getNewsByFilter = (query) => {
+  console.log(query);
   return async (dispatch) => {
     //dispatch(actions.filter.query);
     try {
@@ -49,7 +50,6 @@ export const getCountry = (query) => {
           responseType: 'json',
         })
         .then((res) => res.json());
-        //console.log(country);
         return country;
     } catch (err) {
       dispatch(actions.country.error(err));
@@ -67,7 +67,6 @@ export const getResource = (query) => {
           responseType: 'json',
         })
         .then((res) => res.json());
-        //console.log(resource);
         return resource;
     } catch (err) {
       dispatch(actions.resource.error(err));
