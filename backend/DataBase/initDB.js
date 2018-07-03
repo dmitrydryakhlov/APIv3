@@ -96,7 +96,7 @@ new Promise(()=>{
       new Promise ((resolve) => {
         let url = MakeRequest.getUrlSourceByCountry(data[item].countryShortName);
         //let result = MakeRequest.makeRequestSources(url);
-       // resolve(result);
+        // resolve(result);
       }).then((data)=>{
         for (let item of data){
           DB.select('SELECT sourceNameId FROM resources WHERE sourceNameId ="' + item.id+'"' ).then((flag)=>{        
@@ -113,39 +113,29 @@ new Promise(()=>{
     }
   }).then(()=>{
     DB.select('SELECT sourceNameId, sourceCountry FROM resources').then((data)=>{
-      //let countryId = 
-      //console.log(data);
       let counter = 0;
       for(let item in data){
         let countryId = data[item].sourceCountry;
-        //console.log(data[item]);
         if (counter == 2){
           break;
         }
         new Promise ((resolve) => {
           let url = MakeRequest.getUrlNewsByResource(data[item].sourceNameId);
-          //console.log(url);
           let result = MakeRequest.makeRequestNews(url);
           resolve(result);
         }).then((data)=>{
-          console.log(data);
           for (let item of data){
             DB.select('SELECT title FROM news WHERE title ="' + item.title+'"' ).then((flag)=>{        
               if(flag.length==0){
-                console.log('FRASH NEWS');
                 let insertStr = [];
-                //console.log(item);
                 insertStr.push('"'+countryId+'"');
                 for (let index in item){
-                  //console.log(index);
                   if(index=='source'){
                     insertStr.push(`"${item[index].id.replace(/\'|\"/g)}"`);
-                    //console.log(`*********"${item[index].id.replace(/\'|\"/g)}"`);
                   }else{
                     insertStr.push(`"${item[index].replace(/\'|\"/g)}"`);
                   }
                 }
-                console.log(insertStr);
                 DB.insertInTable('news (countryId,sourceId,author,title,description,url,urlToImage,date)', insertStr.join(','));
               }
             });
