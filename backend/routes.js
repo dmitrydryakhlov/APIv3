@@ -64,23 +64,39 @@ out.resource = (req, res) => {
 
 out.getNewsByFilter = (req, res) => {
   return new Promise((resolve, reject) => {
-    if(req.body.selectedResource!=''){
-      DB.select('SELECT sourceNameId FROM resources WHERE sourceName = "'+req.body.selectedResource+'"')
-        .then(data => {
-          for(let item in data){
-            DB.select('SELECT * FROM news WHERE sourceId = "'+data[item].sourceNameId+'"')
-              .then(data => {
-                let news = [];
-                for(let item in data){
-                  news.push(data[item]);
-                }
-                res.send(news);
-              });
+    let sql = 'SELECT * FROM news ';
+    if(req.body.selectedResource!=''||req.body.selectedCountry!=''){
+      sql+='WHERE ';
+      if(req.body.selectedResource!=''){
+        DB.select('SELECT sourceNameId FROM resources WHERE sourceName = "'+req.body.selectedResource+'"')
+          .then(data => {
+            for(let item in data){
+              sql += 'sourceId = ' + data[item].sourceNameId +'"';
+            }
+          });
+        }
+        if(req.body.selectedCountry!=''){
+          DB.select('SELECT countryShortName FROM country WHERE countryName = "'+req.body.selectedCountry+'"')
+            .then(data => {
+              for(let item in data){
+                sql += 'sourceId = ' + data[item].sourceNameId +'"';
+              }
+            });
           }
-        })
-        .catch(err => {
-          reject(err);
-        });
+              DB.select('SELECT * FROM news WHERE sourceId = "'+data[item].sourceNameId+'"')
+                .then(data => {
+                  let news = [];
+                  for(let item in data){
+                    news.push(data[item]);
+                  }
+                  res.send(news);
+                });
+            }
+          })
+          .catch(err => {
+            reject(err);
+          });
+      }
     }
   });
 };

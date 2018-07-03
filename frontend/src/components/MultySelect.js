@@ -49,7 +49,6 @@ class StatesField extends Component {
     console.log(event);
     this.setState({
       selectedCountry: event,
-      //selectedResource: event,
     });
     this.searchNews(this.state.selectedCountry, this.state.selectedResource);
   }
@@ -76,10 +75,9 @@ class StatesField extends Component {
   }
 
   render () {
-    //console.log(this.props);
     let options = [];
     for (let i = 0; i< 2; i++){
-      options[i] = [];
+     options[i] = [];
     }
     if(this.state.resource.length!==0){
       for (let item in this.state.resource){
@@ -90,26 +88,29 @@ class StatesField extends Component {
     for (let item in this.state.country){
       options[0].push({value: this.state.country[item], label: this.state.country[item], className: this.state.country[item]});
     }
-    let sections = []; 
-    for( let i = 0; i< 2; i++ ){
-      sections.push(
-        <Select
-          key = {i}
-          options={options[i]}
+    
+    return (
+      <div>
+      <Select
+      options={options[0]}
+      simpleValue
+      clearable={this.state.clearable}
+      name="selected-state"
+      disabled={this.state.disabled}
+      value={this.state.selectedCountry}
+      onChange={this.updateCountry}
+      searchable={this.state.searchable}
+    />
+    <Select
+          options={options[1]}
           simpleValue
           clearable={this.state.clearable}
           name="selected-state"
           disabled={this.state.disabled}
-          value={this.state.selectedCountry}
-          params = {i}
+          value={this.state.selectedResource}
           onChange={this.updateResource}
           searchable={this.state.searchable}
         />
-      );
-    }
-    return (
-      <div>
-        {sections}
       </div>
     );
   }

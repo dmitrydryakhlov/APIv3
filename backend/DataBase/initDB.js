@@ -44,6 +44,7 @@ const resourceColumnTypes = [
   //////////////////////////////////////////////////////////////
 const newsColumnNames = [
   'newsId',
+  'countryId',
   'sourceId',
   'author',
   'title',
@@ -54,13 +55,14 @@ const newsColumnNames = [
 ];
 const newsColumnTypes = [
   'INT(5) AUTO_INCREMENT PRIMARY KEY', // newsId
-  'VARCHAR(200)',      // sourceId
-  'VARCHAR(200)', // author
+  'VARCHAR(100)',   //countryId
+  'VARCHAR(200)',   // sourceId
+  'VARCHAR(200)',   // author
   'VARCHAR(300)',   // title
   'VARCHAR(400)',   // description
   'VARCHAR(350)',   // url
   'VARCHAR(500)',   // urlToImage,
-  'VARCHAR(150)'         // data
+  'VARCHAR(150)'    // data
 ];
 //////////////////////////////////////////////////////////////
 
@@ -94,7 +96,7 @@ new Promise(()=>{
       new Promise ((resolve) => {
         let url = MakeRequest.getUrlSourceByCountry(data[item].countryShortName);
         //let result = MakeRequest.makeRequestSources(url);
-        //resolve(result);
+       // resolve(result);
       }).then((data)=>{
         for (let item of data){
           DB.select('SELECT sourceNameId FROM resources WHERE sourceNameId ="' + item.id+'"' ).then((flag)=>{        
@@ -110,16 +112,19 @@ new Promise(()=>{
       });
     }
   }).then(()=>{
-    DB.select('SELECT sourceNameId FROM resources').then((data)=>{
+    DB.select('SELECT sourceNameId, sourceCountry FROM resources').then((data)=>{
+      //let countryId = 
       //console.log(data);
       let counter = 0;
       for(let item in data){
-        //if (counter == 10){
-        //  break;
-        //}
+        let countryId = data[item].sourceCountry;
+        //console.log(data[item]);
+        if (counter == 2){
+          break;
+        }
         new Promise ((resolve) => {
           let url = MakeRequest.getUrlNewsByResource(data[item].sourceNameId);
-          console.log(url);
+          //console.log(url);
           let result = MakeRequest.makeRequestNews(url);
           resolve(result);
         }).then((data)=>{
@@ -129,18 +134,19 @@ new Promise(()=>{
               if(flag.length==0){
                 console.log('FRASH NEWS');
                 let insertStr = [];
-                console.log(item);
+                //console.log(item);
+                insertStr.push('"'+countryId+'"');
                 for (let index in item){
-                  console.log(index);
+                  //console.log(index);
                   if(index=='source'){
                     insertStr.push(`"${item[index].id.replace(/\'|\"/g)}"`);
-                    console.log(`*********"${item[index].id.replace(/\'|\"/g)}"`);
+                    //console.log(`*********"${item[index].id.replace(/\'|\"/g)}"`);
                   }else{
                     insertStr.push(`"${item[index].replace(/\'|\"/g)}"`);
                   }
                 }
-                //console.log(insertStr);
-                DB.insertInTable('news (sourceId,author,title,description,url,urlToImage,date)', insertStr.join(','));
+                console.log(insertStr);
+                DB.insertInTable('news (countryId,sourceId,author,title,description,url,urlToImage,date)', insertStr.join(','));
               }
             });
           }
