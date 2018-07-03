@@ -1,5 +1,5 @@
 import { Button, FormControl, FormGroup, Panel } from 'react-bootstrap';
-import { searchNews, getCountry, getResource } from '../actions/indexAction';
+import { searchNews } from '../actions/indexAction';
 import {connect} from 'react-redux';
 import React, { Component } from 'react';
 

@@ -44,9 +44,19 @@ class StatesField extends Component {
   clearValue (e) {
     this.select.setInputValue('');
   }
+
   updateCountry (event) {
+    console.log(event);
     this.setState({
       selectedCountry: event,
+      //selectedResource: event,
+    });
+    this.searchNews(this.state.selectedCountry, this.state.selectedResource);
+  }
+
+  updateResource (event) {
+    console.log(event);
+    this.setState({
       selectedResource: event,
     });
     this.searchNews(this.state.selectedCountry, this.state.selectedResource);
@@ -58,27 +68,20 @@ class StatesField extends Component {
         selectedCountry: selectedCountry,
         selectedResource: selectedResource
       });
-      console.log(data);
     this.props.getNewsByFilter(data);
   };
-
-  updateResource (newValue) {
-    this.setState({
-      selectedResource: newValue,
-    });
-  }
 
   focusStateSelect () {
     this.select.focus();
   }
 
   render () {
-    console.log(this.props);
+    //console.log(this.props);
     let options = [];
     for (let i = 0; i< 2; i++){
       options[i] = [];
     }
-    if(this.state.resource.length!=0){
+    if(this.state.resource.length!==0){
       for (let item in this.state.resource){
         options[1].push({value: this.state.resource[item], label: this.state.resource[item], className: this.state.resource[item]});
       }
@@ -99,7 +102,7 @@ class StatesField extends Component {
           disabled={this.state.disabled}
           value={this.state.selectedCountry}
           params = {i}
-          onChange={this.updateCountry}
+          onChange={this.updateResource}
           searchable={this.state.searchable}
         />
       );
