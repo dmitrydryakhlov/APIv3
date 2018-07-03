@@ -14,6 +14,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use('/search', routes.search, function(){
   console.log('search');
 });
+
+app.use('/getNewsByFilter', routes.getNewsByFilter, function(){
+  console.log('getNewsByFilter');
+});
+
 app.use('/country', routes.country, function(){
   console.log('country');
 });

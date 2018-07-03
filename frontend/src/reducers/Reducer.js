@@ -2,8 +2,7 @@ import {createActions, handleActions} from 'redux-actions';
 
 const initialState = {
   news: [],
-  country:[],
-  resource:[],
+  filter:{},
   err: null
 };
 
@@ -14,50 +13,29 @@ export const actions = createActions({
       SUCCESS: (news) => ({news}),
       ERROR: (err) => ({err}),
     },
-    COUNTRY: {
-      LOADING: null,
-      SUCCESS: (country) => ({country}),
-      ERROR: (err) => ({err}),
-    },
-    RESOURCE: {
-      LOADING: null,
-      SUCCESS: (resource) => ({resource}),
-      ERROR: (err) => ({err}),
+    FILTER: {
+      COUNTRY: (country) => ({country}),
+      RESOURCE: (resource) => ({resource})
     },
   },
 }).news;
 
 const reducer = handleActions({
-  [actions.country.loading](state) {
-    return {...state, country:[], err: null};
-  },
+
   [actions.search.loading](state) {
     return {...state, news: [], err: null};
   },
-  [actions.resource.loading](state) {
-    return {...state, resource: [], err: null};
-  },
-
-
-  [actions.country.success](state, {payload: {country}}) {
-    return Object.assign({}, state, {country: country, err: null});
-  },
   [actions.search.success](state, {payload: {news}}) {
-    return Object.assign({}, state, {news: news, err: null});
+    return {...state, news: news, err: null};
   },
-  [actions.resource.success](state, {payload: {resource}}) {
-    return Object.assign({}, state, {resource: resource, err: null});
-  },
-
-
   [actions.search.error](state, {payload: {err}}) {
     return {...state, news: [], err: err};
   },
-  [actions.country.error](state, {payload: {err}}) {
-    return {...state, news: [], country:[], err: err};
+  [actions.filter.country](state, {payload: {country}}) {
+    return {...state, filter: country, err: null};
   },
-  [actions.resource.error](state, {payload: {err}}) {
-    return {...state, news: [], resource:[], err: err};
+  [actions.filter.resource](state, {payload: {resource}}) {
+    return {...state, filter: resource, err: null};
   },
 }, initialState);
 

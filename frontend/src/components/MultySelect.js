@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import {connect} from 'react-redux';
-import { getCountry, getResource } from '../actions/indexAction';
+import { searchNews ,getCountry, getResource, getNewsByFilter } from '../actions/indexAction';
 
 
 class StatesField extends Component {
@@ -14,26 +14,29 @@ class StatesField extends Component {
     this.updateCountry = this.updateCountry.bind(this);
     this.updateResource = this.updateResource.bind(this);
 
-    let resource = [];
+    //getNewsByFilter('')().then(data=>{
+    //  this.setState({news: data});
+    //  console.log(data);
+    //});
+
     getResource('')().then(data=>{
       this.setState({resource: data});
     });
 
-    let country =[];
     getCountry('')().then(data=>{
       this.setState({country: data});
     });
 
     this.state = {
       label: 'States:',
-      resource: {resource},
-      country: {country},
+      news:[],
+      resource: [],
+      country: [],
       disabled: false,
       searchable: this.props.searchable,
       selectedCountry: '',
       selectedResource: '',
       clearable: true,
-      rtl: false,
     };
     //console.log(this.state);
   }
@@ -41,14 +44,24 @@ class StatesField extends Component {
   clearValue (e) {
     this.select.setInputValue('');
   }
-  updateCountry (e, params) {
-    console.log(e);
-    console.log(e.key);
-    //console.log(e);
+  updateCountry (event) {
     this.setState({
-      //selectedCountry: newValue,
+      selectedCountry: event,
+      selectedResource: event,
     });
+    this.searchNews(this.state.selectedCountry, this.state.selectedResource);
   }
+
+  searchNews = (selectedCountry, selectedResource ) => {
+    const data = JSON.stringify({
+        type: 'filter',
+        selectedCountry: selectedCountry,
+        selectedResource: selectedResource
+      });
+      console.log(data);
+    this.props.getNewsByFilter(data);
+  };
+
   updateResource (newValue) {
     this.setState({
       selectedResource: newValue,
@@ -60,7 +73,7 @@ class StatesField extends Component {
   }
 
   render () {
-    //console.log(this.props);
+    console.log(this.props);
     let options = [];
     for (let i = 0; i< 2; i++){
       options[i] = [];
@@ -91,7 +104,6 @@ class StatesField extends Component {
         />
       );
     }
-    console.log(this.state);
     return (
       <div>
         {sections}
@@ -101,9 +113,12 @@ class StatesField extends Component {
 }
 
 const mapStateToProps = state => ({
-  country: state.country,
-  source: state.resource,
-  news: state.news
+  news: state.news,
+  filter: state.filter
 });
 
-export default connect (mapStateToProps)(StatesField);
+const mapDispatchToProps = {
+  getNewsByFilter,
+};
+
+export default connect (mapStateToProps, mapDispatchToProps)(StatesField);

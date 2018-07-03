@@ -36,6 +36,7 @@ class NewsList extends Component {
 
 const mapStateToProps = state => ({
   news: state.news,
+  filter: state.filter,
 });
 
 export default connect(mapStateToProps)(NewsList);

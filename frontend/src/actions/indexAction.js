@@ -19,6 +19,26 @@ export const searchNews = (query) => {
   };
 };
 
+export const getNewsByFilter = (query) => {
+  return async (dispatch) => {
+    //dispatch(actions.filter.query);
+    try {
+        const news = await fetch('/getNewsByFilter', { 
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: query,
+          responseType: 'json',
+        })
+        .then((res) => res.json());
+        dispatch(actions.search.success(news));
+        console.log(news);
+        return news;
+    } catch (err) {
+      //dispatch(actions.search.error(err));
+    }
+  };
+};
+
 export const getCountry = (query) => {
   return async (dispatch) => {
     try {
@@ -54,3 +74,4 @@ export const getResource = (query) => {
     }
   };
 };
+
