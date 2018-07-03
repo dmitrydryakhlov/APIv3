@@ -21,7 +21,6 @@ export const searchNews = (query) => {
 
 export const getCountry = (query) => {
   return async (dispatch) => {
-    dispatch(actions.country.loading());
     try {
         const country = await fetch('/country', { 
           method: 'POST',
@@ -30,8 +29,8 @@ export const getCountry = (query) => {
           responseType: 'json',
         })
         .then((res) => res.json());
-        dispatch(actions.country.success(country));
-        console.log(country);
+        //console.log(country);
+        return country;
     } catch (err) {
       dispatch(actions.country.error(err));
     }
@@ -40,7 +39,6 @@ export const getCountry = (query) => {
 
 export const getResource = (query) => {
   return async (dispatch) => {
-    dispatch(actions.resource.loading());
     try {
         const resource = await fetch('/resource', { 
           method: 'POST',
@@ -49,8 +47,8 @@ export const getResource = (query) => {
           responseType: 'json',
         })
         .then((res) => res.json());
-        dispatch(actions.resource.success(resource));
-        console.log(resource);
+        //console.log(resource);
+        return resource;
     } catch (err) {
       dispatch(actions.resource.error(err));
     }

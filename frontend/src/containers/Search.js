@@ -26,8 +26,6 @@ class Search extends Component {
               placeholder="Search fresh news"
           ></FormControl>
           <Button onClick={() => this.searchNews()}>Search</Button>
-          <Button onClick={() => this.getCountry()}>GetCountry</Button>
-          <Button onClick={() => this.getResource()}>getResource</Button>
         </FormGroup>
       </Panel>);
   }
@@ -36,15 +34,6 @@ class Search extends Component {
     const data = JSON.stringify({type: 'keyword', keyword: this.keywordInput.value});
     this.props.searchNews(data);
   };
-  getCountry = () => {
-    console.log(this.props);
-    this.props.getCountry('dima');
-  };
-  getResource = () => {
-    console.log(this.props);
-    this.props.getResource('dima');
-  };
-
 }
 
 const mapStateToProps = state => ({
@@ -53,8 +42,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   searchNews,
-  getCountry,
-  getResource
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);
