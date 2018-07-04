@@ -50,9 +50,10 @@ export const getCountry = (query) => {
           responseType: 'json',
         })
         .then((res) => res.json());
+        //console.log(country);
         return country;
     } catch (err) {
-      dispatch(actions.country.error(err));
+      //dispatch(actions.country.error(err));
     }
   };
 };
@@ -67,9 +68,10 @@ export const getResource = (query) => {
           responseType: 'json',
         })
         .then((res) => res.json());
+        //console.log(resource);
         return resource;
     } catch (err) {
-      dispatch(actions.resource.error(err));
+      //dispatch(actions.resource.error(err));
     }
   };
 };

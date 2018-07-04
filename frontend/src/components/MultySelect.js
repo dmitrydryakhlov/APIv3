@@ -14,24 +14,41 @@ class StatesField extends Component {
     this.updateCountry = this.updateCountry.bind(this);
     this.updateResource = this.updateResource.bind(this);
 
-    //getNewsByFilter('')().then(data=>{
-    //  this.setState({news: data});
-    //  console.log(data);
-    //});
-
     getResource('')().then(data=>{
-      this.setState({resource: data});
+      console.log(data);
+      let resourceName = [];
+      let resourceNameId = [];
+      for (let item in data){
+        resourceName.push(data[item].sourceName);
+        resourceNameId.push(data[item].sourceNameId);
+      }
+      this.setState(
+        {resourceName: resourceName,
+        resourceId: resourceNameId}
+      );
     });
 
     getCountry('')().then(data=>{
-      this.setState({country: data});
+      console.log(data);
+      let countryName = [];
+      let countryId = [];
+      for (let item in data){
+        countryName.push(data[item].countryName);
+        countryId.push(data[item].countryNameId);
+      }
+      this.setState(
+        {countryName: countryName,
+        countryId: countryId}
+      );
     });
 
     this.state = {
       label: 'States:',
       news:[],
-      resource: [],
-      country: [],
+      resourceName: [],
+      resourceId: [],
+      countryName: [],
+      countryId: [],
       disabled: false,
       searchable: this.props.searchable,
       selectedCountry: '',
@@ -79,14 +96,15 @@ class StatesField extends Component {
     for (let i = 0; i< 2; i++){
      options[i] = [];
     }
-    if(this.state.resource.length!==0){
-      for (let item in this.state.resource){
-        options[1].push({value: this.state.resource[item], label: this.state.resource[item], className: this.state.resource[item]});
+    if(this.state.resourceName.length!==0){
+      for (let item in this.state.countryName){
+        options[1].push({value: this.state.countryName[item], label: this.state.countryName[item], className: this.state.countryName[item]});
       }
     }
-    
-    for (let item in this.state.country){
-      options[0].push({value: this.state.country[item], label: this.state.country[item], className: this.state.country[item]});
+    if(this.state.countryName.length!==0){
+      for (let item in this.state.resourceName){
+        options[0].push({value: this.state.resourceName[item], label: this.state.resourceName[item], className: this.state.resourceName[item]});
+     }
     }
     
     return (

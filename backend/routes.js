@@ -32,11 +32,11 @@ out.search = (req, res) => {
 
 out.country = (req, res) => {
   return new Promise((resolve, reject) => {
-    DB.select('SELECT countryName FROM country')
+    DB.select('SELECT countryName, countryShortName FROM country')
       .then(data => { 
         let countries = [];
         for(let item in data){
-          countries.push(data[item].countryName);
+          countries.push({countryName: data[item].countryName, countryNameId:data[item].countryShortName});
         }
         res.send(countries);
       })
@@ -48,11 +48,11 @@ out.country = (req, res) => {
 
 out.resource = (req, res) => {
   return new Promise((resolve, reject) => {
-    DB.select('SELECT sourceName FROM resources')
+    DB.select('SELECT sourceName, sourceNameId FROM resources')
       .then(data => { 
         let resources = [];
         for(let item in data){
-          resources.push(data[item].sourceName);
+          resources.push({sourceName: data[item].sourceName, sourceNameId:data[item].sourceNameId});
         }
         res.send(resources);
       })
@@ -108,7 +108,7 @@ out.getNewsByFilter = (req, res) => {
           });
       }
     }
-    .then((sql)=>{
+    /*.then((sql)=>{
       console.log(sql);
       DB.select(sql)
         .then(data => {
@@ -120,8 +120,8 @@ out.getNewsByFilter = (req, res) => {
         }).catch(err => {
           reject(err);
         });
-    });
-});
-}
+    });*/
+  });
+};
 
 module.exports = out;
