@@ -4,21 +4,9 @@ const DB = require('./DataBase/DB');
 const out = {};
 
 out.search = (req, res) => {
-  console.log(req.body);
   let url = ''; 
-  switch (req.body.type){
-  case 'keyword': {
+  if (req.body.type =='keyword') {
     url = makeRequest.getUrlByKeyword(req.body.keyword);
-    break;
-  }
-  case 'country': {
-    url = makeRequest.getUrlByCountry(req.body.keyword);
-    break;
-  }
-  case 'resource': {
-    url = makeRequest.getUrlByResource(req.body.keyword);
-    break;
-  }
   }
   return new Promise((resolve, reject) => {
     makeRequest.makeRequestNews(url)
@@ -63,12 +51,10 @@ out.resource = (req, res) => {
 };
 
 out.getNewsByFilter = (req, res) => {
-  console.log(req.body);
   return new Promise((resolve, reject) => {
     let sql = 'SELECT * FROM news ';
     if(req.body.selectedResource!=''||req.body.selectedCountry!=''){
       sql+='WHERE ';
-      console.log('WHERE');
       if(req.body.selectedResource!=='' && req.body.selectedCountry!==''){
         sql += 'sourceId = "' + req.body.selectedResource +'"';
         sql+='AND ';

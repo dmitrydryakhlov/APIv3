@@ -31,6 +31,7 @@ const reducer = handleActions({
   [actions.search.error](state, {payload: {err}}) {
     return {...state, news: [], err: err};
   },
+
   [actions.filter.country](state, {payload: {country}}) {
     return {...state, filter: country, err: null};
   },
