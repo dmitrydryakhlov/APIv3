@@ -63,15 +63,18 @@ out.resource = (req, res) => {
 };
 
 out.getNewsByFilter = (req, res) => {
+  console.log(req.body);
   return new Promise((resolve, reject) => {
     let sql = 'SELECT * FROM news ';
     if(req.body.selectedResource!=''||req.body.selectedCountry!=''){
       sql+='WHERE ';
-      if(req.body.selectedResource!='' && req.body.selectedCountry!=''){
+      console.log('WHERE');
+      if(req.body.selectedResource!=='' && req.body.selectedCountry!==''){
         DB.select('SELECT sourceNameId FROM resources WHERE sourceName = "'+req.body.selectedResource+'"')
           .then(data => {
+            console.log('&&');
             for(let item in data){
-              sql += 'sourceId = ' + data[item].sourceNameId +'"';
+              sql += 'sourceId = "' + data[item].sourceNameId +'"';
             }
           }).then(()=>{
             DB.select('SELECT sourceNameId FROM resources WHERE sourceName = "'+req.body.selectedResource+'"');
@@ -79,19 +82,24 @@ out.getNewsByFilter = (req, res) => {
           .then(data => {
             sql+='AND ';
             for(let item in data){
-              sql += 'sourceId = ' + data[item].sourceNameId +'"';
-            }
-          });
-      } else 
-      if(req.body.selectedResource!=''){
-        DB.select('SELECT sourceNameId FROM resources WHERE sourceName = "'+req.body.selectedResource+'"')
-          .then(data => {
-            for(let item in data){
+              console.log(data[item].sourceNameId);
               sql += 'sourceId = "' + data[item].sourceNameId +'"';
             }
           });
+      } else 
+      if(req.body.selectedResource!==''){
+        console.log('SELECTED RESOURCE');
+        DB.select('SELECT sourceNameId FROM resources WHERE sourceName = "'+req.body.selectedResource+'"')
+          .then(data => {
+            console.log(data);
+            for(let item in data){
+              sql += 'sourceId = "' + data[item].sourceNameId +'"';
+            }
+            console.log('after for', sql);
+          });
       }else
-      if(req.body.selectedCountry!=''){
+      if(req.body.selectedCountry!==''){
+        console.log('SELECTED COUNTRY');
         DB.select('SELECT countryShortName FROM country WHERE countryName = "'+req.body.selectedCountry+'"')
           .then(data => {
             for(let item in data){
@@ -100,17 +108,20 @@ out.getNewsByFilter = (req, res) => {
           });
       }
     }
-    resolve();
-    DB.select(sql)
-      .then(data => {
-        let news = [];
-        for(let item in data){
-          news.push(data[item]);
-        }
-        res.send(news);
-      }).catch(err => {
-        reject(err);
-      });
-  });
-};
+    .then((sql)=>{
+      console.log(sql);
+      DB.select(sql)
+        .then(data => {
+          let news = [];
+          for(let item in data){
+            news.push(data[item]);
+          }
+          res.send(news);
+        }).catch(err => {
+          reject(err);
+        });
+    });
+});
+}
+
 module.exports = out;
