@@ -96,14 +96,14 @@ class StatesField extends Component {
     for (let i = 0; i< 2; i++){
      options[i] = [];
     }
-    if(this.state.resourceName.length!==0){
+    if(this.state.countryName.length!==0){
       for (let item in this.state.countryName){
-        options[1].push({value: this.state.countryName[item], label: this.state.countryName[item], className: this.state.countryName[item]});
+        options[0].push({value: this.state.countryId[item], label: this.state.countryName[item], className: this.state.countryName[item]});
       }
     }
-    if(this.state.countryName.length!==0){
+    if(this.state.resourceName.length!==0){
       for (let item in this.state.resourceName){
-        options[0].push({value: this.state.resourceName[item], label: this.state.resourceName[item], className: this.state.resourceName[item]});
+        options[1].push({value: this.state.resourceId[item], label: this.state.resourceName[item], className: this.state.resourceName[item]});
      }
     }
     
