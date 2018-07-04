@@ -2,7 +2,6 @@ import {actions} from '../reducers/Reducer'
 
 export const searchNews = (query) => {
   return async (dispatch) => {
-    //console.log(query);
     dispatch(actions.search.loading());
     try {
         const news = await fetch('/search', { 
@@ -20,9 +19,8 @@ export const searchNews = (query) => {
 };
 
 export const getNewsByFilter = (query) => {
-  console.log(query);
   return async (dispatch) => {
-    //dispatch(actions.filter.query);
+    dispatch(actions.search.loading());
     try {
         const news = await fetch('/getNewsByFilter', { 
           method: 'POST',
@@ -32,16 +30,15 @@ export const getNewsByFilter = (query) => {
         })
         .then((res) => res.json());
         dispatch(actions.search.success(news));
-        console.log(news);
         return news;
     } catch (err) {
-      //dispatch(actions.search.error(err));
+      dispatch(actions.search.error(err));
     }
   };
 };
 
-export const getCountry = (query) => {
-  return async (dispatch) => {
+export const getCountry = () => {
+  return async () => {
     try {
         const country = await fetch('/country', { 
           method: 'POST',
@@ -50,16 +47,15 @@ export const getCountry = (query) => {
           responseType: 'json',
         })
         .then((res) => res.json());
-        //console.log(country);
         return country;
     } catch (err) {
-      //dispatch(actions.country.error(err));
+      console.log(err);
     }
   };
 };
 
-export const getResource = (query) => {
-  return async (dispatch) => {
+export const getResource = () => {
+  return async () => {
     try {
         const resource = await fetch('/resource', { 
           method: 'POST',
@@ -68,10 +64,9 @@ export const getResource = (query) => {
           responseType: 'json',
         })
         .then((res) => res.json());
-        //console.log(resource);
         return resource;
     } catch (err) {
-      //dispatch(actions.resource.error(err));
+      console.log(err);
     }
   };
 };

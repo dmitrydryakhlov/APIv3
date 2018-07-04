@@ -53,34 +53,33 @@ out.resource = (req, res) => {
 out.getNewsByFilter = (req, res) => {
   return new Promise((resolve, reject) => {
     let sql = 'SELECT * FROM news ';
-    if(req.body.selectedResource!=''||req.body.selectedCountry!=''){
+    if(req.body.selectedResource!=null||req.body.selectedCountry!=null){
       sql+='WHERE ';
-      if(req.body.selectedResource!=='' && req.body.selectedCountry!==''){
+      if(req.body.selectedResource!=null && req.body.selectedCountry!=null){
         sql += 'sourceId = "' + req.body.selectedResource +'"';
         sql+='AND ';
         sql += 'countryId = "' + req.body.selectedCountry +'"';
       }else 
-      if(req.body.selectedResource!==''){
+      if(req.body.selectedResource!=null){
         sql += 'sourceId = "' + req.body.selectedResource +'"';
       }else 
-      if(req.body.selectedCountry!==''){
+      if(req.body.selectedCountry!=null){
         sql += 'countryId = "' + req.body.selectedCountry +'"';
       }
+      DB.select(sql)
+        .then(data => {
+          let news = [];
+          for(let item in data){
+            news.push(data[item]);
+          }
+          res.send(news);
+        }).catch(err => {
+          reject(err);
+        });
+    }else{
+      res.send([]);
     }
-    console.log(sql);
-    DB.select(sql)
-      .then(data => {
-        let news = [];
-        for(let item in data){
-          news.push(data[item]);
-        }
-        res.send(news);
-      }).catch(err => {
-        reject(err);
-      });
   });
 };
       
-
-
 module.exports = out;

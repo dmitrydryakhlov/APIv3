@@ -14,8 +14,7 @@ class StatesField extends Component {
     this.updateCountry = this.updateCountry.bind(this);
     this.updateResource = this.updateResource.bind(this);
 
-    getResource('')().then(data=>{
-      console.log(data);
+    getResource(null)().then(data=>{
       let resourceName = [];
       let resourceNameId = [];
       for (let item in data){
@@ -28,8 +27,7 @@ class StatesField extends Component {
       );
     });
 
-    getCountry('')().then(data=>{
-      console.log(data);
+    getCountry(null)().then(data=>{
       let countryName = [];
       let countryId = [];
       for (let item in data){
@@ -51,31 +49,28 @@ class StatesField extends Component {
       countryId: [],
       disabled: false,
       searchable: this.props.searchable,
-      selectedCountry: '',
-      selectedResource: '',
+      selectedCountry: null,
+      selectedResource: null,
       clearable: true,
     };
-    //console.log(this.state);
   }
     
   clearValue (e) {
     this.select.setInputValue('');
   }
 
-  updateCountry (event) {
-    console.log(event);
+  updateCountry (country) {
     this.setState({
-      selectedCountry: event,
+      selectedCountry: country,
     });
-    this.searchNews(this.state.selectedCountry, this.state.selectedResource);
+    this.searchNews(country, this.state.selectedResource);
   }
 
-  updateResource (event) {
-    console.log(event);
+  updateResource (resource) {
     this.setState({
-      selectedResource: event,
+      selectedResource: resource,
     });
-    this.searchNews(this.state.selectedCountry, this.state.selectedResource);
+    this.searchNews(this.state.selectedCountry, resource);
   }
 
   searchNews = (selectedCountry, selectedResource ) => {

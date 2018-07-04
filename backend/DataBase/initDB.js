@@ -95,8 +95,8 @@ new Promise(()=>{
     for(let item in data){
       new Promise ((resolve) => {
         let url = MakeRequest.getUrlSourceByCountry(data[item].countryShortName);
-        //let result = MakeRequest.makeRequestSources(url);
-        // resolve(result);
+        let result = MakeRequest.makeRequestSources(url);
+        resolve(result);
       }).then((data)=>{
         for (let item of data){
           DB.select('SELECT sourceNameId FROM resources WHERE sourceNameId ="' + item.id+'"' ).then((flag)=>{        
@@ -116,7 +116,7 @@ new Promise(()=>{
       let counter = 0;
       for(let item in data){
         let countryId = data[item].sourceCountry;
-        if (counter == 2){
+        if (counter == 10){
           break;
         }
         new Promise ((resolve) => {
@@ -125,15 +125,19 @@ new Promise(()=>{
           resolve(result);
         }).then((data)=>{
           for (let item of data){
-            DB.select('SELECT title FROM news WHERE title ="' + item.title+'"' ).then((flag)=>{        
-              if(flag.length==0){
+            DB.select('SELECT * FROM news WHERE title = "' + item.title.replace(/\'|\"/g)+'"' ).then((flag)=>{  
+              if(flag.length===0){
                 let insertStr = [];
                 insertStr.push('"'+countryId+'"');
                 for (let index in item){
-                  if(index=='source'){
-                    insertStr.push(`"${item[index].id.replace(/\'|\"/g)}"`);
+                  if(item[index]===null){
+                    insertStr.push("''");
                   }else{
-                    insertStr.push(`"${item[index].replace(/\'|\"/g)}"`);
+                    if(index==='source'){
+                      insertStr.push(`"${item[index].id.replace(/\'|\"/g)}"`);
+                    }else{
+                      insertStr.push(`"${item[index].replace(/\'|\"/g)}"`);
+                    }
                   }
                 }
                 DB.insertInTable('news (countryId,sourceId,author,title,description,url,urlToImage,date)', insertStr.join(','));
@@ -143,6 +147,7 @@ new Promise(()=>{
         });
         counter++;
       }
+      
     });
   });
 });

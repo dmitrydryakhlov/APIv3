@@ -11,22 +11,14 @@ app.get('/', function (req, res) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use('/search', routes.search, function(){
-  console.log('search');
-});
+app.use('/search', routes.search);
 
-app.use('/getNewsByFilter', routes.getNewsByFilter, function(){
-  console.log('getNewsByFilter');
-});
+app.use('/getNewsByFilter', routes.getNewsByFilter);
 
-app.use('/country', routes.country, function(){
-  console.log('country');
-});
-app.use('/resource', routes.resource, function(){
-  console.log('resource');
-});
+app.use('/country', routes.country);
+
+app.use('/resource', routes.resource);
 
 app.listen(3001, function(){
-  console.log(100);
   console.log('Example app listening on port 3001!');
 });

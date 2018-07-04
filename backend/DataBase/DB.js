@@ -5,13 +5,12 @@ const settingsDB = require ('../settings/db');
 const con = mysql.createConnection(settingsDB);
   
 function createDatabase(name) {
-  console.log('create Database');
   con.query('CREATE DATABASE '+ name);
   console.log('Database created');
 }
 
 function select(query){
-  return new Promise ((resolve,reject)=>{
+  return new Promise ((resolve)=>{
     con.query(query, (err, result)=>{
       if(err)throw err;
       resolve (result);
@@ -27,7 +26,6 @@ function createTable(name, columnNames, columnTypes) {
   }
   const queryString = `${tempString.slice(0, tempString.length - 2)  });`;
 
-  //console.log(queryString);
   con.query(queryString, (queryErr) => {
     if (queryErr) throw queryErr;
     console.log('Table created');
@@ -35,23 +33,12 @@ function createTable(name, columnNames, columnTypes) {
 }
 
 function insertInTable(tableName, insertData) {
-  //console.log('insertInTable');
-  
   let queryString = `INSERT INTO ${tableName} VALUES (${insertData});`;
-  //console.log(queryString, '\n');
-
+  
   con.query(queryString, (queryErr) => {
     if (queryErr) throw queryErr;
-    //console.log('***********Data Inserted**********');
+    console.log('***********Data Inserted**********');
   });
-}
-
-function showTables(){
-  
-  console.log('show tables');
-  //con.query('SHOW COLUMNS FROM resources;',(queryErr) => {
-  //  if (queryErr) throw queryErr;
-  //});
 }
 
 function deleteTable(tableName) {
@@ -85,7 +72,6 @@ module.exports.createTable = createTable;
 module.exports.insertInTable = insertInTable;
 module.exports.deleteTable = deleteTable;
 module.exports.dropDataBase = dropDataBase;
-module.exports.showTables = showTables;
 module.exports.getSourcesForCountries = getSourcesForCountries;
 module.exports.select = select;
 
