@@ -1,52 +1,41 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-import {connect} from 'react-redux';
-import { searchNews ,getCountry, getResource, getNewsByFilter } from '../actions/indexAction';
+import { connect } from 'react-redux';
+import { searchNews } from '../actions/indexAction';
 
 
 class StatesField extends Component {
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.clearValue = this.clearValue.bind(this);
     this.updateCountry = this.updateCountry.bind(this);
     this.updateResource = this.updateResource.bind(this);
 
-    getResource(null)().then(data=>{
-      let resourceName = [];
-      let resourceNameId = [];
-      for (let item in data){
-        resourceName.push(data[item].sourceName);
-        resourceNameId.push(data[item].sourceNameId);
-      }
-      this.setState(
-        {resourceName: resourceName,
-        resourceId: resourceNameId}
-      );
-    });
+    const country = (name, shortName) => ({ name, shortName });
+    const ListOfCountries = [
+      country('Россия', 'ru'),
+      country('Italy', 'it'),
+      country('France', 'fr'),
+      country('United Kingdom', 'gb'),
+      country('United States', 'us'),
+    ];
 
-    getCountry(null)().then(data=>{
-      let countryName = [];
-      let countryId = [];
-      for (let item in data){
-        countryName.push(data[item].countryName);
-        countryId.push(data[item].countryNameId);
-      }
-      this.setState(
-        {countryName: countryName,
-        countryId: countryId}
-      );
-    });
+    const resource = (name, id) => ({ name, id });
+    const ListOfResource = [
+      resource('Football Italia', 'football-italia'),
+      resource('BBC News', 'bbc-news'),
+      resource('BBC Sport', 'bbc-sport'),
+      resource('Business Insider (UK)', 'business-insider-uk'),
+      resource('Metro', 'metro'),
+    ];
 
     this.state = {
-      label: 'States:',
-      news:[],
-      resourceName: [],
-      resourceId: [],
-      countryName: [],
-      countryId: [],
+      news: [],
+      resources: ListOfResource,
+      countries: ListOfCountries,
       disabled: false,
       searchable: this.props.searchable,
       selectedCountry: null,
@@ -54,67 +43,78 @@ class StatesField extends Component {
       clearable: true,
     };
   }
-    
-  clearValue (e) {
+
+  clearValue() {
     this.select.setInputValue('');
   }
 
-  updateCountry (country) {
+  updateCountry(country) {
     this.setState({
       selectedCountry: country,
+      selectedResource: undefined,
     });
-    this.searchNews(country, this.state.selectedResource);
+    this.searchNews(country, undefined);
   }
 
-  updateResource (resource) {
+  updateResource(resource) {
     this.setState({
       selectedResource: resource,
+      selectedCountry: undefined,
     });
-    this.searchNews(this.state.selectedCountry, resource);
+    this.searchNews(undefined, resource);
   }
 
-  searchNews = (selectedCountry, selectedResource ) => {
-    const data = JSON.stringify({
-        type: 'filter',
+  searchNews(selectedCountry, selectedResource) {
+    if (selectedCountry) {
+      const data = JSON.stringify({
+        type: 'country',
         selectedCountry: selectedCountry,
         selectedResource: selectedResource
       });
-    this.props.getNewsByFilter(data);
-  };
+      this.props.searchNews('country', data);
+    } else if (selectedResource) {
+      const data = JSON.stringify({
+        type: 'resource',
+        selectedCountry: selectedCountry,
+        selectedResource: selectedResource
+      });
+      this.props.searchNews('resource', data);
+    }
+  }
 
-  focusStateSelect () {
+  focusStateSelect() {
     this.select.focus();
   }
 
-  render () {
+  render() {
     let options = [];
-    for (let i = 0; i< 2; i++){
-     options[i] = [];
+    for (let i = 0; i < 2; i++) {
+      options[i] = [];
     }
-    if(this.state.countryName.length!==0){
-      for (let item in this.state.countryName){
-        options[0].push({value: this.state.countryId[item], label: this.state.countryName[item], className: this.state.countryName[item]});
+    if (this.state.countries.length !== 0) {
+      for (let item in this.state.countries) {
+        options[0].push({ value: this.state.countries[item].shortName, label: this.state.countries[item].name, className: this.state.countries[item].name });
       }
     }
-    if(this.state.resourceName.length!==0){
-      for (let item in this.state.resourceName){
-        options[1].push({value: this.state.resourceId[item], label: this.state.resourceName[item], className: this.state.resourceName[item]});
-     }
+    if (this.state.resources.length !== 0) {
+      for (let item in this.state.resources) {
+        options[1].push({ value: this.state.resources[item].id, label: this.state.resources[item].name, className: this.state.resources[item].name });
+      }
     }
-    
+
     return (
       <div>
-      <Select
-      options={options[0]}
-      simpleValue
-      clearable={this.state.clearable}
-      name="selected-state"
-      disabled={this.state.disabled}
-      value={this.state.selectedCountry}
-      onChange={this.updateCountry}
-      searchable={this.state.searchable}
-    />
-    <Select
+        <Select
+          options={options[0]}
+          simpleValue
+          clearable={this.state.clearable}
+          name="selected-state"
+          disabled={this.state.disabled}
+          value={this.state.selectedCountry}
+          onChange={this.updateCountry}
+          searchable={this.state.searchable}
+        />
+        <Select
           options={options[1]}
           simpleValue
           clearable={this.state.clearable}
@@ -135,7 +135,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  getNewsByFilter,
+  searchNews,
 };
 
-export default connect (mapStateToProps, mapDispatchToProps)(StatesField);
+export default connect(mapStateToProps, mapDispatchToProps)(StatesField);

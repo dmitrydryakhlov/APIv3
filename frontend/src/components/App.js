@@ -4,10 +4,10 @@ import NewsList from './NewsList';
 import MyMultiSelect from './MultySelect';
 
 class App extends Component {
-  render(){
-    return(
+  render() {
+    return (
       <div>
-        <Search/>
+        <Search />
         <MyMultiSelect />
         <NewsList />
       </div>

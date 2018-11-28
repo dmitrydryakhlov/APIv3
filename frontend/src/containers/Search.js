@@ -1,6 +1,6 @@
 import { Button, FormControl, FormGroup, Panel } from 'react-bootstrap';
 import { searchNews } from '../actions/indexAction';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
 
 
@@ -21,9 +21,9 @@ class Search extends Component {
         {error}
         <FormGroup>
           <FormControl
-              type="text"
-              inputRef={input => this.keywordInput = input}
-              placeholder="Search fresh news"
+            type="text"
+            inputRef={input => this.keywordInput = input}
+            placeholder="Search fresh news"
           ></FormControl>
           <Button onClick={() => this.searchNews()}>Search</Button>
         </FormGroup>
@@ -31,9 +31,9 @@ class Search extends Component {
   }
 
   searchNews = () => {
-    if(this.keywordInput.value){
-      const data = JSON.stringify({type: 'keyword', keyword: this.keywordInput.value});
-      this.props.searchNews(data);
+    if (this.keywordInput.value) {
+      const data = JSON.stringify({ type: 'keyword', keyword: this.keywordInput.value });
+      this.props.searchNews('search', data);
     }
   };
 }

@@ -1,5 +1,5 @@
 const express = require('express');
-const bodyParser = require('body-parser'); 
+const bodyParser = require('body-parser');
 const routes = require('./routes');
 
 const app = express();
@@ -9,16 +9,14 @@ app.get('/', function (req, res) {
 });
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/search', routes.search);
-
-app.use('/getNewsByFilter', routes.getNewsByFilter);
 
 app.use('/country', routes.country);
 
 app.use('/resource', routes.resource);
 
-app.listen(3001, function(){
+app.listen(3001, function () {
   console.log('Example app listening on port 3001!');
 });
